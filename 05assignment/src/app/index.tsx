@@ -227,7 +227,6 @@ export default function App() {
 
   const addNote = () => {
     setModalVisible(true)
-
   }
 
   const saveNewNote = () => {
