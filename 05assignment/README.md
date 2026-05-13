@@ -17,6 +17,13 @@ This is an [Expo](https://expo.dev) project created with [`create-expo-app`](htt
    ```
 <video controls src="Screenrecording_20260512_231918.mp4" title="Title"></video>
 
+- Demo -
+https://github.com/user-attachments/assets/50098ef9-d093-4d33-94c6-a9a7f4c2c199
+
+
+
+
+
 - This is the main page pop-up when first open or reload app. Press "Get Started" button to close this page.
 <img src="./assets/images/main-page.jpeg" width="300" />
 
