@@ -88,32 +88,32 @@ Cart Screen
 ## Screenshots
 
 #### Onboarding Screen
-![Onboarding Screen](./assets/ScreenShots/Onboarding-Screen.jpeg)
+<img src="./assets/ScreenShots/Onboarding-Screen.jpeg" width="200" />
 
 #### Login Screen
-![Login Screen](./assets/ScreenShots/Login-Screen.jpeg)
+<img src="./assets/ScreenShots/Login-Screen.jpeg" width="200" />
 
 #### Home Screen
-![Home Screen](./assets/ScreenShots/Home-Screen.jpeg)
-![Home Screen](./assets/ScreenShots/Home-Screen2.jpeg)
+<img src="./assets/ScreenShots/Home-Screen.jpeg" width="200" />
+<img src="./assets/ScreenShots/Home-Screen2.jpeg" width="200" />
 
 #### Resturant Screen
-![Resturant Screen](./assets/ScreenShots/Resturant-Screen.jpeg)
+<img src="./assets/ScreenShots/Resturant-Screen.jpeg" width="200" />
 
 #### Cart Screen
-![Cart Screen](./assets/ScreenShots/Cart-Screen.jpeg)
+<img src="./assets/ScreenShots/Cart-Screen.jpeg" width="200" />
 
 #### Search Screen
-![Search Screen](./assets/ScreenShots/Search-Screen.jpeg)
+<img src="./assets/ScreenShots/Search-Screen.jpeg" width="200" />
 
 #### Profile Screen
-![Profile Screen](./assets/ScreenShots/Profile-Screen.jpeg)
+<img src="./assets/ScreenShots/Profile-Screen.jpeg" width="200" />
 
 #### Drawer
-![Drawer](./assets/ScreenShots/Drawer.jpeg)
+<img src="./assets/ScreenShots/Drawer.jpeg" width="200" />
 
 #### Order Badge
-![Order Badge](./assets/ScreenShots/Order-Badge.jpeg)
+<img src="./assets/ScreenShots/Order-Badge.jpeg" width="200" />
 
 ---
 
