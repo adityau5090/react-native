@@ -2,28 +2,38 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import HomeScreen from "../../screens/mainScreens/Home/HomeScreen";
 import ResturantScreen from "../../screens/mainScreens/Home/ResturantScreen";
 import CartScreen from "../../screens/mainScreens/Home/CartScreen";
-import { useRoute } from "@react-navigation/native"
+import { Image } from "react-native";
+
 
 const HomeStack = createNativeStackNavigator()
 
 const MyHomeStack = () => {
     // const route = useRoute();
     return (
-        <HomeStack.Navigator >
+        <HomeStack.Navigator screenOptions={{
+            animation: "slide_from_right",
+        }} >
             <HomeStack.Screen name="Home" component={HomeScreen}  
             options={{
-                title: "Food App",
+                title: "Bite",
+                headerTitle: () => (
+                    <Image 
+                    source={require("../../../assets/Logo.png")}
+                    style={{ width: 80, height: 80, resizeMode: "contain"}}
+                    />
+                ),
                 headerStyle: {
-                    backgroundColor: '#111',
+                    backgroundColor: 'green',
                 },
-                headerTintColor: "#fff"
+                headerTintColor: "#fff",
+
             }}
             />
             <HomeStack.Screen name="Resturant" component={ResturantScreen} 
              options={({route}: any) => ({
                 title: route.params?.name ||  "Resturant",
                 headerStyle: {
-                    backgroundColor: '#111',
+                    backgroundColor: 'green',
                 },
                 headerTintColor: "#fff",
                 headerBackTitle: "Back",
@@ -33,7 +43,7 @@ const MyHomeStack = () => {
             options={{
     title: "Your Cart",
     headerStyle: {
-      backgroundColor: "#111",
+      backgroundColor: "green",
     },
     headerTintColor: "#fff",
     headerBackTitle: "Back",

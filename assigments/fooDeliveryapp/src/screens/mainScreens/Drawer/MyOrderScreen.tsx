@@ -6,11 +6,11 @@ import {
   Image,
 } from "react-native";
 import React, { useContext } from "react";
-import CartContext from "../../context/CartContext";
+import CartContext from "../../../context/CartContext";
 
 const OrdersScreen = () => {
   const { order }: any = useContext(CartContext);
-
+// console.log(order)
   return (
     <View style={styles.container}>
 
@@ -33,7 +33,6 @@ const OrdersScreen = () => {
                   ₹{item.total}
                 </Text>
               </View>
-
 
               {item?.items?.map((food: any) => (
                 <View key={food.id} style={styles.itemRow}>
