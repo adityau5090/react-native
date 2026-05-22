@@ -65,6 +65,9 @@ npx expo start
 
 ---
 
+## Demo video ->
+https://ik.imagekit.io/o6n27bufc/Screenrecording_20260522_181440.mp4
+
 ## 🧠 Lets's understand the flow of APP 
 
 Onboarding
