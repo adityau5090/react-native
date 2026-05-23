@@ -58,7 +58,7 @@ It demonstrates **navigation architecture, state management, and clean UI design
 ## ⚙️ Installation
 
 ```bash
-git clone 
+git clone https://github.com/adityau5090/react-native/blob/main/assigments/fooDeliveryapp
 npm install
 npx expo start
 ```

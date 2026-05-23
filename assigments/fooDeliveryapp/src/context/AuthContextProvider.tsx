@@ -5,10 +5,10 @@ import AsyncStorage from "@react-native-async-storage/async-storage"
 
 const AuthContextProvider = ({ children } : any) => {
     const [isLoggedIn, setIsLoggedIn] = useState(false)
-    const [name, setName] = useState("");
-  const [password, setPassword] = useState("");
-  const [image, setImage] = useState("");
-  const [address, setAddress] = useState("");
+    const [name, setName] = useState("Aditya");
+  const [password, setPassword] = useState("123456");
+  const [image, setImage] = useState("https://ik.imagekit.io/o6n27bufc/headshots/GWJChqAWEAAWboF_TirFkrTaf.jpeg?updatedAt=1778093710213");
+  const [address, setAddress] = useState("Varanasi BHU Gate No.2");
     const [isLoading, setIsLoading] = useState(false)
 
     useEffect(() => {

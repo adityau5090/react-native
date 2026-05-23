@@ -1,0 +1,1 @@
+import { Tabs } from "react-native-screens";
