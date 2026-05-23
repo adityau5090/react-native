@@ -1,15 +1,29 @@
 import { db } from "@/lib/db";
 
-type Ctx = {params: {id:string}}
+type Ctx = { id: string };
 
-export async function GET(_req:Request, {params}: Ctx) {
-    
-}
+export async function GET(_req: Request, { id }: Ctx) {
+    const userId = parseInt(id, 10);
+    if (Number.isNaN(userId)) {
+        return Response.json({
+            error: "Invalid user ID",
+            status: 400
+        });
+    }
 
-export async function PUT(req:Request, {params}: Ctx) {
-    
-}
+    try {
+        const fetchUser = await db.execute({
+            sql: `SELECT * FROM users_data WHERE id = ?`,
+            args: [userId],
+        });
 
-export async function DELETE(req:Request, {params}: Ctx) {
-    
+        const user = Array.isArray(fetchUser.rows) ? fetchUser.rows[0] : null;
+        return Response.json(user);
+    } catch (error) {
+        console.log("Error : ", error);
+        return Response.json({
+            error: "Unable to fetch user",
+            status: 400
+        });
+    }
 }
