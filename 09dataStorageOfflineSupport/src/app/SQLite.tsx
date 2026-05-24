@@ -1,10 +1,9 @@
 import { Pressable, StyleSheet, Text, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import * as SQLite from "expo-sqlite"
-import { Link, useRouter } from 'expo-router'
+import { Link } from 'expo-router'
 
 const SQLiteDb = () => {
-    const router = useRouter();
     const db = SQLite.openDatabaseSync("demo.db")
 
     const [output, setOutput] = useState("")
@@ -69,15 +68,12 @@ const SQLiteDb = () => {
         createTable()
     },[])
 
-    const goHome = () => {
-        router.replace("/")
-    } 
 
   return (
       <View style={styles.container}>
         <View style={styles.titleContainer}>
-          <Text style={styles.title}>Secure Store</Text>
-          <Pressable style={styles.link} onPress={goHome}><Text>Home</Text></Pressable>
+          <Text style={styles.title}>SQLite</Text>
+          <Link style={styles.link} href={"/fileSystem"}><Text>File System</Text></Link>
         </View>
         <Pressable style={styles.btn}  onPress={createTable} ><Text style={styles.btnText}>CreateTable</Text></Pressable>
         <Pressable style={styles.btn}  onPress={insertUser} ><Text style={styles.btnText}>InsertUser</Text></Pressable>
