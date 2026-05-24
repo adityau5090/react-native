@@ -1,7 +1,7 @@
-import { useState } from "react";
-import { Text, View, StyleSheet, Button, Pressable } from "react-native";
-import * as SecureStorage from "expo-secure-store"
 import { Link } from "expo-router";
+import * as SecureStorage from "expo-secure-store";
+import { useState } from "react";
+import { Pressable, StyleSheet, Text, View } from "react-native";
 
 export default function Index() {
   const [output, setOutput] = useState<any>("")
@@ -47,7 +47,7 @@ export default function Index() {
     <View style={styles.container}>
       <View style={styles.titleContainer}>
         <Text style={styles.title}>Secure Store</Text>
-        <Link style={styles.link} href="/fileSystem"><Text>File System</Text></Link>
+        <Link style={styles.link} href="/SQLite"><Text>SQLite</Text></Link>
       </View>
       <Pressable style={styles.btn}  onPress={saveData} ><Text style={styles.btnText}>SaveData</Text></Pressable>
       <Pressable style={styles.btn}  onPress={getData} ><Text style={styles.btnText}>GetData</Text></Pressable>
