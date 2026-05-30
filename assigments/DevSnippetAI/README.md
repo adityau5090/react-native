@@ -23,6 +23,39 @@ The application follows an **offline-first approach**, ensuring that all importa
 
 ---
 
+## ⚙️ Installation
+
+```bash
+git clone https://github.com/adityau5090/react-native/blob/main/assigments/fooDeliveryapp
+npm install
+npx expo start
+```
+
+## Demo video ->
+
+
+
+## Screenshots
+
+#### HomeScreen Screen
+<img src="./assets/ScreenShots/HomeScreen.jpeg" width="200" />
+
+#### Favorite Screen
+<img src="./assets/ScreenShots/FavoriteScreen.jpeg" width="200" />
+
+#### Folder Screen
+<img src="./assets/ScreenShots/FolderScreen.jpeg" width="200" />
+<img src="./assets/ScreenShots/FolderScreen2.jpeg" width="200" />
+
+#### Setting Screen
+<img src="./assets/ScreenShots/SettingScreen.jpeg" width="200" />
+
+#### File Screen
+<img src="./assets/ScreenShots/FileScreen.jpeg" width="200" />
+
+#### Create Snippet Screen
+<img src="./assets/ScreenShots/CreateSnippetScreen.jpeg" width="200" />
+
 # ✨ Features
 
 ## 📝 Snippet Management
