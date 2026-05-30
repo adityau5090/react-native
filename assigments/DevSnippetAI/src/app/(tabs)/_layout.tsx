@@ -7,7 +7,13 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function TabsLayout() {
   return (
-    <SafeAreaView>
+    <SafeAreaView
+    style={{
+        flex: 1,
+        backgroundColor: "#EAD8D8",
+      }}
+      edges={["top"]}
+      >
 
       <StatusBar
         style="light"
