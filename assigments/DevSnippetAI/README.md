@@ -32,6 +32,7 @@ npx expo start
 ```
 
 ## Demo video ->
+https://ik.imagekit.io/o6n27bufc/Screenrecording_20260531_105426.mp4?updatedAt=1780207877106
 
 
 
