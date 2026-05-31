@@ -6,7 +6,7 @@ const db = SQLite.openDatabaseSync("devsnippets.db");
 export const initDatabase = async () => {
   try {
     await db.execAsync(createSnippetTable);
-    console.log("Database initialized");
+    // console.log("Database initialized");
 
   } catch (error) {
     console.log("DB Error:", error);

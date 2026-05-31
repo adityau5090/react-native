@@ -9,6 +9,7 @@ import {
 } from "react-native";
 
 import {
+  Stack,
   useLocalSearchParams,
   useRouter,
 } from "expo-router";
@@ -127,11 +128,15 @@ const handleDelete = () => {
 
 
   return (
+    <>
+    <Stack.Screen
+    options={{ headerShown: false}} />
     <ScrollView
       style={styles.container}
       contentContainerStyle={{
-        paddingBottom: 120,
+        paddingBottom: 30,
       }}
+      showsVerticalScrollIndicator={false}
     >
       <Text style={styles.title}>
         {data.name}
@@ -241,6 +246,7 @@ const handleDelete = () => {
   </TouchableOpacity>
 </View>
     </ScrollView>
+    </>
   );
 }
 

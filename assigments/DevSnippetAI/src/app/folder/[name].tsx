@@ -1,5 +1,5 @@
 import { createTextFile, getFilesInFolder } from "@/services/fileSystem.service";
-import { useLocalSearchParams, useRouter } from "expo-router";
+import { Stack, useLocalSearchParams, useRouter } from "expo-router";
 import { useEffect, useState } from "react";
 import { FlatList, Pressable, StyleSheet, Text, View } from "react-native";
 import {
@@ -66,6 +66,12 @@ export default function FolderScreen() {
     loadFiles();
   };
   return (
+    <>
+    <Stack.Screen 
+    options={{
+      headerShown: false
+    }}
+    />
     <View style={styles.container}>
       <Text style={styles.title}>
         {name}
@@ -209,6 +215,7 @@ export default function FolderScreen() {
   </View>
 </Modal>
     </View>
+    </>
   );
 }
 

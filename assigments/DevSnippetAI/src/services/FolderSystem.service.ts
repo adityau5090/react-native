@@ -8,7 +8,7 @@ export const initializeStorage = async () => {
       rootDirectory.create();
     }
 
-    console.log("Storage initialized");
+    // console.log("Storage initialized");
   } catch (error) {
     console.log("Storage Error:", error);
   }

@@ -71,10 +71,8 @@ export default function FavoritesScreen() {
 
   return (
     <View style={styles.container}>
-      <FlatList
-      ListHeaderComponent={
-<>
-  <Text style={styles.title}>
+      <View>
+        <Text style={styles.title}>
     Favorites
   </Text>
 
@@ -86,23 +84,13 @@ export default function FavoritesScreen() {
     source={require("@/assets/images/favorites-banner.png")}
     style={styles.banner}
   />
-
-  <View style={styles.countCard}>
-    <Text style={styles.countNumber}>
-      {snippets.length}
-    </Text>
-
-    <Text style={styles.countText}>
-      Saved Favorites
-    </Text>
-  </View>
-
   <Text style={styles.sectionTitle}>
     Recent Favorites
   </Text>
-</>
-}
+      </View>
+      <FlatList
         data={snippets}
+        showsVerticalScrollIndicator={false} 
         keyExtractor={(item) =>
           item.id.toString()
         }

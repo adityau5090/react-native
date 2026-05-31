@@ -4,7 +4,6 @@ export const explainWithOpenAI =
     async (code: string) => {
 
         const apiKey = await getValue(KEYS.OPENAI);
-        console.log("using open ai key :  ", apiKey)
 
         const response =
             await fetch(

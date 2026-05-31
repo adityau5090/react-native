@@ -37,15 +37,8 @@ export default function HomeScreen() {
 
   return (
     <View style={[styles.container, { marginBottom: inset.bottom }]}>
-      <FlatList
-        showsVerticalScrollIndicator={false}
-        data={snippets}
-        keyExtractor={(item) =>
-          item.id.toString()
-        }
-        ListHeaderComponent={
-          <>
-            <View style={styles.header}>
+      <View style={styles.topSection}>
+        <View style={styles.header}>
               <View>
                 <Text style={styles.title}>
                   DevSnippets
@@ -106,8 +99,17 @@ export default function HomeScreen() {
             <Text style={styles.sectionTitle}>
               Recent Snippets
             </Text>
-          </>
+      </View>
+      <View style={styles.listContainer}>
+        <FlatList
+        showsVerticalScrollIndicator={false}
+        data={snippets}
+        keyExtractor={(item) =>
+          item.id.toString()
         }
+        contentContainerStyle={{
+        paddingBottom: 100,
+      }}
         ListEmptyComponent={
           <Text style={styles.empty}>
             No snippets found
@@ -140,6 +142,7 @@ export default function HomeScreen() {
           </TouchableOpacity>
         )}
       />
+      </View>
     </View>
   );
 }
@@ -151,6 +154,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     // paddingTop: 20,
   },
+  topSection: {
+  flexShrink: 0,
+},
 
   title: {
     color: "#5C4B4B",
@@ -162,7 +168,7 @@ const styles = StyleSheet.create({
   subtitle: {
     color: "#8A7373",
     fontSize: 16,
-    marginTop: 6,
+    marginTop: 3,
     marginBottom: 24,
   },
 
@@ -170,7 +176,7 @@ const styles = StyleSheet.create({
     width: "100%",
     height: 180,
     borderRadius: 36,
-    marginBottom: 24,
+    marginBottom: 14,
   },
 
   searchInput: {
@@ -178,16 +184,16 @@ const styles = StyleSheet.create({
     color: "#4E4040",
     padding: 18,
     borderRadius: 24,
-    marginBottom: 18,
+    marginBottom: 15,
     borderWidth: 1,
     borderColor: "rgba(255,255,255,0.4)",
   },
 
   button: {
     backgroundColor: "#C98181",
-    padding: 18,
+    padding: 15,
     borderRadius: 30,
-    marginBottom: 24,
+    marginBottom: 10,
     shadowColor: "#A45F5F",
     shadowOpacity: 0.25,
     shadowRadius: 12,
@@ -207,6 +213,9 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     marginBottom: 16,
   },
+  listContainer: {
+  flex: 1,
+},
 
   card: {
     backgroundColor: "rgba(255,255,255,0.3)",

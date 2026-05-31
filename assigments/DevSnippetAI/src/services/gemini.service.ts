@@ -3,7 +3,7 @@ import { getValue, KEYS } from "./secure-store.service";
 export const explainWithGemini = async (code: string) => {
 
     const apiKey = await getValue(KEYS.GEMINI);
-    console.log("Using gemini api key : ", apiKey)
+    // console.log("Using gemini api key : ", apiKey)
     
     const response =
       await fetch(

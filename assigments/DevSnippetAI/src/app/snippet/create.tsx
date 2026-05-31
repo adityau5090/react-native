@@ -1,3 +1,4 @@
+import { Stack } from "expo-router";
 import { createSnippet } from "@/database/snippet.service";
 import { useRouter } from "expo-router";
 import { useState } from "react";
@@ -63,6 +64,12 @@ export default function CreateSnippetScreen() {
   
 
   return (
+    <>
+    <Stack.Screen 
+    options={{
+      headerShown: false,
+    }}
+    />
     <KeyboardAvoidingView 
     style={{flex:1}}
     behavior={
@@ -71,8 +78,8 @@ export default function CreateSnippetScreen() {
     >
     <ScrollView style={styles.container}
     contentContainerStyle={{
-    paddingBottom: 120,
-    padding: 20
+    // paddingBottom: 120,
+    paddingHorizontal: 20
   }}
   keyboardShouldPersistTaps="handled"
     >
@@ -160,6 +167,7 @@ export default function CreateSnippetScreen() {
       </TouchableOpacity>
     </ScrollView>
     </KeyboardAvoidingView>
+    </>
   );
 }
 

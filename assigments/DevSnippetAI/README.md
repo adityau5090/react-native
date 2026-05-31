@@ -32,29 +32,26 @@ npx expo start
 ```
 
 ## Demo video ->
-
+https://ik.imagekit.io/o6n27bufc/Screenrecording_20260531_105426.mp4?updatedAt=1780207877106
 
 
 ## Screenshots
 
 #### HomeScreen Screen
-<img src="./assets/ScreenShots/HomeScreen.jpeg" width="200" />
+<img src="./assets/ScreenShots/home-screen.jpeg" width="200" />
 
-#### Favorite Screen
-<img src="./assets/ScreenShots/FavoriteScreen.jpeg" width="200" />
+#### Snippet Screen
+<img src="./assets/ScreenShots/snippet.jpeg" width="200" />
 
 #### Folder Screen
-<img src="./assets/ScreenShots/FolderScreen.jpeg" width="200" />
-<img src="./assets/ScreenShots/FolderScreen2.jpeg" width="200" />
+<img src="./assets/ScreenShots/folder-screen.jpeg" width="200" />
+<img src="./assets/ScreenShots/folder-screen2.jpeg" width="200" />
 
 #### Setting Screen
-<img src="./assets/ScreenShots/SettingScreen.jpeg" width="200" />
-
-#### File Screen
-<img src="./assets/ScreenShots/FileScreen.jpeg" width="200" />
+<img src="./assets/ScreenShots/setting-screen.jpeg" width="200" />
 
 #### Create Snippet Screen
-<img src="./assets/ScreenShots/CreateSnippetScreen.jpeg" width="200" />
+<img src="./assets/ScreenShots/create-snippet.jpeg" width="200" />
 
 # ✨ Features
 

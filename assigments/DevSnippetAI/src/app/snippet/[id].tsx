@@ -2,7 +2,7 @@ import { deleteSnippet, getSnippetById, toggleFavorite } from "@/database/snippe
 import { explainCode } from "@/services/ai.service";
 import { exportAsText } from "@/services/export.service";
 import { Ionicons } from "@expo/vector-icons";
-import { useLocalSearchParams, useRouter } from "expo-router";
+import { Stack, useLocalSearchParams, useRouter } from "expo-router";
 import { useEffect, useState } from "react";
 import { Alert, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Image } from "react-native";
@@ -115,7 +115,13 @@ export default function SnippetDetailsScreen() {
     const tagsArray = snippet.tags.split(",");
 
     return (
-        <KeyboardAvoidingView
+        <>
+            <Stack.Screen 
+            options={{
+                headerShown: false,
+            }}
+            />
+            <KeyboardAvoidingView
             style={{ flex: 1 }}
             behavior={
                 Platform.OS === "ios" ? "padding" : undefined
@@ -299,6 +305,8 @@ export default function SnippetDetailsScreen() {
 
             </ScrollView>
         </KeyboardAvoidingView>
+        </>
+        
     );
 }
 
