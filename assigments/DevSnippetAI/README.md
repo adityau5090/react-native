@@ -38,20 +38,20 @@ https://ik.imagekit.io/o6n27bufc/Screenrecording_20260531_105426.mp4?updatedAt=1
 ## Screenshots
 
 #### HomeScreen Screen
-<img src="./assets/ScreenShots/Home-screen.jpeg" width="200" />
+<img src="./assets/Screenshots/Home-screen.jpeg" width="200" />
 
 #### Snippet Screen
-<img src="./assets/ScreenShots/Snippet.jpeg" width="200" />
+<img src="./assets/Screenshots/Snippet.jpeg" width="200" />
 
 #### Folder Screen
-<img src="./assets/ScreenShots/Folder-screen.jpeg" width="200" />
-<img src="./assets/ScreenShots/Folder-screen2.jpeg" width="200" />
+<img src="./assets/Screenshots/Folder-screen.jpeg" width="200" />
+<img src="./assets/Screenshots/Folder-screen2.jpeg" width="200" />
 
 #### Setting Screen
-<img src="./assets/ScreenShots/Setting-screen.jpeg" width="200" />
+<img src="./assets/Screenshots/Setting-screen.jpeg" width="200" />
 
 #### Create Snippet Screen
-<img src="./assets/ScreenShots/Create-snippet.jpeg" width="200" />
+<img src="./assets/Screenshots/Create-snippet.jpeg" width="200" />
 
 # ✨ Features
 
