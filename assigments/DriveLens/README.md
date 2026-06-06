@@ -12,13 +12,33 @@ Track drives, analyze driving behavior, maintain streaks, earn XP, unlock achiev
 
 ---
 
+# Demo Video 
+https://ik.imagekit.io/o6n27bufc/WhatsApp%20Video%202026-06-06%20at%2011.25.56%20PM.mp4
+
 # 📸 Screenshots
 
-> Add application screenshots here
+## Splash Screen
+<img src="./assets/screenshot/Splash Screen.jpeg" width="200" />
 
-| Home | Active Drive | Summary |
-|--------|--------|--------|
-| Screenshot | Screenshot | Screenshot |
+## Onboarding Screen
+<img src="./assets/screenshot/onboarding.jpeg" width="200" />
+<img src="./assets/screenshot/onboarding2.jpeg" width="200" />
+
+## Home Screen 
+<img src="./assets/screenshot//home.jpeg" width="200" />
+
+## Reward Screen
+<img src="./assets/screenshot/reward.jpeg" width="200" />
+
+## History Screen 
+<img src="./assets/screenshot/history.jpeg" width="200" />
+
+## Profile Screen
+<img src="./assets/screenshot/profile.jpeg" width="200" />
+
+## Streak Screen
+<img src="./assets/screenshot/streak.jpeg" width="200" />
+
 
 ---
 
@@ -674,7 +694,7 @@ Onboarding State
 ## Clone Repository
 
 ```bash
-git clone https://github.com/your-username/drivelens.git
+git clone https://github.com/adityau5090/react-native/tree/main/assigments/DriveLens
 ```
 
 ## Navigate To Project
