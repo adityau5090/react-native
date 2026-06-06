@@ -764,25 +764,9 @@ Phone Handling Detection
 Sharp Turn Detection
 Aggressive Steering Detection
 ```
-
 ---
 
-# 🚀 Future Roadmap
-
-- Route Maps
-- Weekly Analytics
-- Driver Levels
-- Cloud Synchronization
-- Social Challenges
-- AI Driving Insights
-- Route Replay
-- Real-time Driving Feedback
-- Leaderboards
-- Driving Challenges
-
----
-
-# 👨‍💻 Author
+# 👨‍💻 Aditya
 
 Built with ❤️ using Expo Router, TypeScript, and React Native.
 If you found this project useful, consider giving it a ⭐ on GitHub.
