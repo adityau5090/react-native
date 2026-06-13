@@ -9,3 +9,4 @@ jobs:
     steps: 
       - run: echo "Hello World"
       - run: echo "Hello Aditya" 
+      - run: echo "Hello EAS workflow" 
