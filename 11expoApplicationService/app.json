@@ -1,4 +1,3 @@
-
 {
   "expo": {
     "name": "11expoApplicationService",
@@ -6,7 +5,7 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "11expoapplicationservice",
+    "scheme": "expoapplicationservice",
     "userInterfaceStyle": "automatic",
     "ios": {
       "icon": "./assets/expo.icon"
@@ -47,6 +46,12 @@
       "eas": {
         "projectId": "00ad8a5a-0a0b-4846-b086-0df2492567f4"
       }
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/00ad8a5a-0a0b-4846-b086-0df2492567f4"
     }
   }
 }

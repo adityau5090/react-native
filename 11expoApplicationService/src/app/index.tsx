@@ -66,6 +66,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     flexDirection: 'row',
+    backgroundColor: "tomato"
   },
   safeArea: {
     flex: 1,
@@ -81,6 +82,7 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: Spacing.four,
     gap: Spacing.four,
+    backgroundColor: "tomato"
   },
   title: {
     textAlign: 'center',
