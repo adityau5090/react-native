@@ -1,13 +1,16 @@
-import { Button, StyleSheet, Text, View } from 'react-native'
-import React, { useRef, useState } from 'react'
-import { CameraView, useCameraPermissions } from "expo-camera"
+import { CameraView, useCameraPermissions, useMicrophonePermissions } from "expo-camera"
 import { Image } from 'expo-image'
+import React, { useRef, useState } from 'react'
+import { Button, StyleSheet, Text, View } from 'react-native'
 
 const Camera = () => {
   const [permission, requestPermission] = useCameraPermissions()
+  const [micPermission, requestMicPermission] = useMicrophonePermissions()
   const [ready, setReady] = useState(false)
   const cameraRef = useRef<CameraView>(null)
-  const [photUri, setPhotoUri] = useState<string | null>(null)
+  const [photoUri, setPhotoUri] = useState<string | null>(null)
+  const [videoUri, setVideoUri] = useState<string | null>(null)
+  const [recording, setRecording] = useState(false)
 
   if(!permission){
     return (
@@ -24,9 +27,26 @@ const Camera = () => {
       </View>
     )
   }
+
   const takePhoto = async () => {
     const photo = await cameraRef.current?.takePictureAsync({quality: 1})
     if(photo?.uri) setPhotoUri(photo.uri)
+  }
+
+  const startRecording = async () => {
+    if(!micPermission?.granted){
+      const result = await requestMicPermission();
+      if(!result?.granted) return;
+    }
+
+    setRecording(true);
+    const video = await cameraRef.current?.recordAsync({maxDuration: 15})
+    setVideoUri(video?.uri ?? null)
+    setRecording(false)
+  }
+
+  const stopRecording = async () => {
+    cameraRef.current?.stopRecording()
   }
   return (
     <View style={{flex:1}}>
@@ -35,13 +55,19 @@ const Camera = () => {
         ref={cameraRef}
         style={{flex:1}}
         facing='back'
+        mode="video"
         onCameraReady={() => setReady(true)}
         onMountError={({ message }) => console.warn(message)}
       />
-      <Button title='take Photo' onPress={takePhoto} disabled={!ready} />
-      {photUri && (
-        <Image source={{uri: photUri}} style={{ height: 200 }} contentFit="cover" />
-      )}
+      <Button title={recording ? "stop" : "Record"} 
+      onPress={recording ? stopRecording : startRecording} 
+      disabled={!ready}
+      />
+      {videoUri && <Text selectable >{videoUri}</Text>}
+      {/* <Button title='take Photo' onPress={takePhoto} disabled={!ready} />
+      {photoUri && (
+        <Image source={{uri: photoUri}} style={{ height: 200 }} contentFit="cover" />
+      )} */}
       <Text style={{ padding: 12 }}>
         {ready ? "Camera ready" : "Starting camera"}
       </Text>
