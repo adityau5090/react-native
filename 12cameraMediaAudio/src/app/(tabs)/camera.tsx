@@ -5,8 +5,29 @@ import {
 } from "expo-camera"
 import { Image } from 'expo-image'
 import React, { useRef, useState } from 'react'
-import { Button, Pressable, StyleSheet, Text, View, Linking } from 'react-native'
+import { Button, Pressable, StyleSheet, Text, View, Linking, ActivityIndicator, Alert } from 'react-native'
 import { VideoView, useVideoPlayer } from 'expo-video';
+import * as MediaLibrary from "expo-media-library"
+
+const saveToGallery = async (uri: string) => {
+  const {granted, canAskAgain} = await MediaLibrary.requestPermissionsAsync(true)
+
+  if(!granted){
+    if(!canAskAgain){
+      Alert.alert("Photo library access denied\n",
+        "Enable photo library access in Setting to save photos",
+        [
+          {text: "Cancel", style: "cancel"},
+          {text: "Open Setting", onPress: () => Linking.openSettings() }
+        ]
+      )
+    }
+    throw new Error("Photo library permission denied")
+  }
+
+  const asset = await MediaLibrary.saveToLibraryAsync(uri)
+  return asset;
+}
 
 const Camera = () => {
   const [permission, requestPermission] = useCameraPermissions()
@@ -17,9 +38,11 @@ const Camera = () => {
   const [videoUri, setVideoUri] = useState<string | null>(null)
   const [recording, setRecording] = useState(false)
   const [mode, setMode] = useState<"picture" | "video" | "qr">("picture")
-
   const [result, setResult] = useState<BarcodeScanningResult | null>(null)
   const lastScanned = useRef<string | null>(null)
+
+  const [saving, setSaving] = useState(false)
+  const [status, setStatus] = useState<string | null>(null)
 
 
   if (!permission) {
@@ -37,6 +60,7 @@ const Camera = () => {
       </View>
     )
   }
+
 
 
 
@@ -97,6 +121,28 @@ const Camera = () => {
     alert("Invalid URL");
   }
 };
+
+
+const handleSaveToGallery = async () => {
+  if(!photoUri) return;
+
+  setSaving(true);
+  setStatus("Saving to gallery");
+
+  try {
+    await saveToGallery(photoUri)
+    setStatus("Photo saved to gallery")
+  } catch (error) {
+    if(error instanceof Error && 
+      error.message !== "Photo library permission denied"
+    ){
+      Alert.alert("Save failed", error.message)
+    }
+    setStatus("Could not save to gallery")
+  }finally{
+    setSaving(false)
+  }
+}
 
   return (
     <View style={{ flex: 1 }}>
@@ -204,6 +250,13 @@ const Camera = () => {
           uri={videoUri}
         />
       )}
+      {
+        photoUri && (
+          <Button title={saving ? "Saving..." : "Save to Gallery"} onPress={handleSaveToGallery} 
+          disabled={saving} 
+          />
+        )
+      }
       {result && (
         <View
           style={{
