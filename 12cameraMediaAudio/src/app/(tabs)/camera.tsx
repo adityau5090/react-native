@@ -5,7 +5,7 @@ import {
 } from "expo-camera"
 import { Image } from 'expo-image'
 import React, { useRef, useState } from 'react'
-import { Button, Pressable, StyleSheet, Text, View } from 'react-native'
+import { Button, Pressable, StyleSheet, Text, View, Linking } from 'react-native'
 import { VideoView, useVideoPlayer } from 'expo-video';
 
 const Camera = () => {
@@ -16,7 +16,7 @@ const Camera = () => {
   const [photoUri, setPhotoUri] = useState<string | null>(null)
   const [videoUri, setVideoUri] = useState<string | null>(null)
   const [recording, setRecording] = useState(false)
-  const [mode, setMode] = useState<"picture" | "video">("picture")
+  const [mode, setMode] = useState<"picture" | "video" | "qr">("picture")
 
   const [result, setResult] = useState<BarcodeScanningResult | null>(null)
   const lastScanned = useRef<string | null>(null)
@@ -86,7 +86,17 @@ const Camera = () => {
     setResult(scan)
   }
 
+  const openScannedLink = async () => {
+  if (!result?.data) return;
 
+  const canOpen = await Linking.canOpenURL(result.data);
+
+  if (canOpen) {
+    await Linking.openURL(result.data);
+  } else {
+    alert("Invalid URL");
+  }
+};
 
   return (
     <View style={{ flex: 1 }}>
@@ -95,9 +105,9 @@ const Camera = () => {
         ref={cameraRef}
         style={{ flex: 1 }}
         facing='back'
-        mode={mode}
-        // barcodeScannerSettings={{barcodeTypes:["qr"]}}
-        // onBarcodeScanned={onBarCodeScanned }
+        mode={mode === "video" ? "video" : "picture"} // it means if we selet video then its mode is video otherwise for qr and picture it's mode is picture
+        barcodeScannerSettings={{ barcodeTypes: ["qr"] }}
+        onBarcodeScanned={mode === "qr" ? onBarCodeScanned : undefined}
         onCameraReady={() => setReady(true)}
         onMountError={({ message }) => console.warn(message)}
       />
@@ -131,14 +141,26 @@ const Camera = () => {
           </Text>
         </Pressable>
 
+        <Pressable onPress={() => setMode("qr")}>
+          <Text
+            style={{
+              fontSize: 18,
+              fontWeight: mode === "qr" ? "bold" : "normal",
+            }}
+          >
+            QR
+          </Text>
+        </Pressable>
+
       </View>
+
       <View
         style={{
           alignItems: "center",
           padding: 5,
         }}
       >
-        {mode === "picture" ? (
+        {mode === "picture" || mode === "qr" ? (
           <Pressable
             onPress={takePhoto}
             disabled={!ready}
@@ -178,12 +200,29 @@ const Camera = () => {
         <Image source={{ uri: photoUri }} style={{ height: 200 }} contentFit="cover" />
       )}
       {mode === "video" && videoUri && (
-        <Text>{videoUri}</Text>
-      )}
-      {videoUri && (
         <VideoPreview
           uri={videoUri}
         />
+      )}
+      {result && (
+        <View
+          style={{
+            padding: 16,
+            backgroundColor: "#fff",
+          }}
+        >
+          <Text>Type: {result.type}</Text>
+          <Text>Data: {result.data}</Text>
+
+          <Button title="Open link" onPress={openScannedLink} />
+          <Button
+            title="Scan Again"
+            onPress={() => {
+              lastScanned.current = null;
+              setResult(null);
+            }}
+          />
+        </View>
       )}
     </View>
   )
