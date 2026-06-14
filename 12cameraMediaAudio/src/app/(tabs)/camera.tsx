@@ -1,4 +1,5 @@
-import { CameraView, useCameraPermissions, useMicrophonePermissions } from "expo-camera"
+import { CameraView, useCameraPermissions, useMicrophonePermissions,
+  type BarcodeScanningResult } from "expo-camera"
 import { Image } from 'expo-image'
 import React, { useRef, useState } from 'react'
 import { Button, StyleSheet, Text, View } from 'react-native'
@@ -11,6 +12,9 @@ const Camera = () => {
   const [photoUri, setPhotoUri] = useState<string | null>(null)
   const [videoUri, setVideoUri] = useState<string | null>(null)
   const [recording, setRecording] = useState(false)
+
+  const [result, setResult] = useState<BarcodeScanningResult | null>(null)
+  const lastScanned = useRef<string | null>(null)
 
   if(!permission){
     return (
@@ -34,6 +38,8 @@ const Camera = () => {
   }
 
   const startRecording = async () => {
+    if(recording) return;
+     
     if(!micPermission?.granted){
       const result = await requestMicPermission();
       if(!result?.granted) return;
@@ -48,6 +54,12 @@ const Camera = () => {
   const stopRecording = async () => {
     cameraRef.current?.stopRecording()
   }
+
+  const onBarCodeScanned = (scan: BarcodeScanningResult) => {
+    if(lastScanned.current === scan.data) return;
+    lastScanned.current = scan.data
+    setResult(scan)
+  }
   return (
     <View style={{flex:1}}>
 
@@ -55,7 +67,9 @@ const Camera = () => {
         ref={cameraRef}
         style={{flex:1}}
         facing='back'
-        mode="video"
+        // mode="video"
+        barcodeScannerSettings={{barcodeTypes:["qr"]}}
+        onBarcodeScanned={onBarCodeScanned }
         onCameraReady={() => setReady(true)}
         onMountError={({ message }) => console.warn(message)}
       />
