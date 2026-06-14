@@ -18,6 +18,13 @@ export default function TabLayout() {
           tabBarIcon: ({ color }) => <Ionicons size={28} name="cog" color={color} />,
         }}
       />
+      <Tabs.Screen
+        name="cameraflashTorch"
+        options={{
+          title: 'Camera',
+          tabBarIcon: ({ color }) => <Ionicons size={28} name="camera" color={color} />,
+        }}
+      />
     </Tabs>
   );
 }
