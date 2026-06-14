@@ -21,17 +21,11 @@ export default function TabLayout() {
       <Tabs.Screen
         name="cameraflashTorch"
         options={{
-          title: 'CameraFlash',
+          title: 'FlashFip&Zoom',
           tabBarIcon: ({ color }) => <Ionicons size={28} name="flash" color={color} />,
         }}
       />
-      <Tabs.Screen
-        name="camerazoom"
-        options={{
-          title: 'CameraZoom',
-          tabBarIcon: ({ color }) => <Ionicons size={28} name="camera-reverse" color={color} />,
-        }}
-      />
+      
     </Tabs>
   );
 }
