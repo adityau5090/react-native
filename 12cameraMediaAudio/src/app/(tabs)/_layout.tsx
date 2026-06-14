@@ -25,6 +25,13 @@ export default function TabLayout() {
           tabBarIcon: ({ color }) => <Ionicons size={28} name="camera" color={color} />,
         }}
       />
+      <Tabs.Screen
+        name="camerazoom"
+        options={{
+          title: 'Camera',
+          tabBarIcon: ({ color }) => <Ionicons size={28} name="camera-reverse" color={color} />,
+        }}
+      />
     </Tabs>
   );
 }
