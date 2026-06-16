@@ -34,6 +34,12 @@ export default function AppTabs() {
           drawable="ic_menu_share"
         />
       </NativeTabs.Trigger>
+      <NativeTabs.Trigger name="haptics">
+        <NativeTabs.Trigger.Label>Haptics</NativeTabs.Trigger.Label>
+        <NativeTabs.Trigger.Icon
+          drawable="ic_menu_compass"
+        />
+      </NativeTabs.Trigger>
     </NativeTabs>
   );
 }
