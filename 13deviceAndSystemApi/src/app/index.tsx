@@ -1,98 +1,217 @@
-import * as Device from 'expo-device';
-import { Platform, StyleSheet } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-
-import { AnimatedIcon } from '@/components/animated-icon';
-import { HintRow } from '@/components/hint-row';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
-import { WebBadge } from '@/components/web-badge';
-import { BottomTabInset, MaxContentWidth, Spacing } from '@/constants/theme';
+import * as Contacts from 'expo-contacts';
+import { useEffect, useState } from 'react';
+import {
+  ActivityIndicator,
+  Alert,
+  Button,
+  FlatList,
+  Linking,
+  Pressable,
+  ScrollView,
+} from 'react-native';
 
-function getDevMenuHint() {
-  if (Platform.OS === 'web') {
-    return <ThemedText type="small">use browser devtools</ThemedText>;
-  }
-  if (Device.isDevice) {
-    return (
-      <ThemedText type="small">
-        shake device or press <ThemedText type="code">m</ThemedText> in terminal
-      </ThemedText>
-    );
-  }
-  const shortcut = Platform.OS === 'android' ? 'cmd+m (or ctrl+m)' : 'cmd+d';
-  return (
-    <ThemedText type="small">
-      press <ThemedText type="code">{shortcut}</ThemedText>
-    </ThemedText>
-  );
+function formatName(contact: Contacts.Contact) {
+  const parts = [contact.firstName, contact.lastName].filter(Boolean);
+  return parts.length > 0 ? parts.join(' ') : contact.name ?? 'Unnamed contact';
 }
 
-export default function HomeScreen() {
-  return (
-    <ThemedView style={styles.container}>
-      <SafeAreaView style={styles.safeArea}>
-        <ThemedView style={styles.heroSection}>
-          <AnimatedIcon />
-          <ThemedText type="title" style={styles.title}>
-            Welcome to&nbsp;Expo
-          </ThemedText>
-        </ThemedView>
+export default function ContactsScreen() {
+  const [permission, setPermission] = useState<Contacts.ContactsPermissionResponse | null>(null);
 
-        <ThemedText type="code" style={styles.code}>
-          get started
+  const [hasContacts, setHasContacts] = useState<boolean | null>(null);
+  const [contacts, setContacts] = useState<Contacts.Contact[]>([]);
+  const [selectedContact, setSelectedContact] = useState<Contacts.Contact | null>(null);
+
+  const [loading, setLoading] = useState(false);
+  const [status, setStatus] = useState<string | null>(null);
+
+  useEffect(() => {
+    Contacts.getPermissionsAsync().then(setPermission);
+  }, []);
+
+  const requestPermission = async () => {
+    const result = await Contacts.requestPermissionsAsync();
+    setPermission(result);
+
+    if (!result.granted && !result.canAskAgain) {
+      Alert.alert('Contacts denied', 'Enable contacts access in Settings.', [
+        { text: 'Cancel', style: 'cancel' },
+        { text: 'Open Settings', onPress: () => Linking.openSettings() },
+      ]);
+    }
+
+    return result.granted;
+  };
+
+  const loadContacts = async () => {
+    const granted = permission?.granted ?? (await requestPermission());
+
+    if (!granted) {
+      setStatus('Contacts permission required.');
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const exists = await Contacts.hasContactsAsync();
+      // console.log("Contact exist : ",exists)
+      setHasContacts(exists);
+
+      const { data } = await Contacts.getContactsAsync({
+        fields: [
+          Contacts.Fields.Emails,
+          Contacts.Fields.PhoneNumbers,
+          Contacts.Fields.Company,
+        ],
+        pageSize: 100,
+        sort: Contacts.SortTypes.FirstName,
+      });
+      // console.log("Contacts :", data)
+      setContacts(data);
+      setStatus(`Loaded ${data.length} contacts.`);
+    } catch (error) {
+      Alert.alert(
+        'Load failed',
+        error instanceof Error ? error.message : 'Unknown error'
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const inspectContact = (contact: Contacts.Contact) => {
+    setSelectedContact(contact);
+    setStatus(`Selected ${formatName(contact)}.`);
+  };
+
+  const openNativePicker = async () => {
+    try {
+      const contact = await Contacts.presentContactPickerAsync();
+
+      if (!contact) {
+        setStatus('Native picker canceled.');
+        return;
+      }
+
+      setSelectedContact(contact);
+      setStatus(`Picked ${formatName(contact)} from native UI.`);
+    } catch (error) {
+      Alert.alert(
+        'Picker failed',
+        error instanceof Error ? error.message : 'Unknown error'
+      );
+    }
+  };
+
+  if (!permission) {
+    return (
+      <ThemedView
+        style={{
+          flex: 1,
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
+        <ActivityIndicator />
+        <ThemedText>Checking contacts permission…</ThemedText>
+      </ThemedView>
+    );
+  }
+
+  return (
+    <ThemedView style={{ flex: 1 }}>
+      <ScrollView contentContainerStyle={{ padding: 24, gap: 12 }}>
+        <ThemedText style={{ fontSize: 18, fontWeight: '600' }}>
+          Contacts
         </ThemedText>
 
-        <ThemedView type="backgroundElement" style={styles.stepContainer}>
-          <HintRow
-            title="Try editing"
-            hint={<ThemedText type="code">src/app/index.tsx</ThemedText>}
-          />
-          <HintRow title="Dev tools" hint={getDevMenuHint()} />
-          <HintRow
-            title="Fresh start"
-            hint={<ThemedText type="code">npm run reset-project</ThemedText>}
-          />
-        </ThemedView>
+        <ThemedText>
+          Permission: {permission.granted ? 'Granted' : 'Not granted'}
+        </ThemedText>
 
-        {Platform.OS === 'web' && <WebBadge />}
-      </SafeAreaView>
+        {!permission.granted && (
+          <Button
+            title="Grant contacts access"
+            onPress={requestPermission}
+          />
+        )}
+
+        <Button title="Load contacts" onPress={loadContacts} />
+
+        <Button
+          title="Open native contact picker"
+          onPress={openNativePicker}
+        />
+
+        {hasContacts === false && (
+          <ThemedText>No contacts on this device.</ThemedText>
+        )}
+
+        {loading && <ActivityIndicator />}
+
+        {status && <ThemedText>{status}</ThemedText>}
+
+        {selectedContact && (
+          <ThemedView
+            style={{
+              gap: 4,
+              marginTop: 10,
+              padding: 12,
+              borderWidth: 1,
+              borderRadius: 8,
+            }}
+          >
+            <ThemedText style={{ fontWeight: '600' }}>
+              Selected Contact
+            </ThemedText>
+
+            <ThemedText>{formatName(selectedContact)}</ThemedText>
+
+            <ThemedText>
+              Company: {selectedContact.company ?? 'No company'}
+            </ThemedText>
+
+            <ThemedText>
+              Phone:{' '}
+              {selectedContact.phoneNumbers?.[0]?.number ?? 'None'}
+            </ThemedText>
+
+            <ThemedText>
+              Email:{' '}
+              {selectedContact.emails?.[0]?.email ?? 'None'}
+            </ThemedText>
+          </ThemedView>
+        )}
+      </ScrollView>
+
+      <FlatList
+        data={contacts}
+        keyExtractor={(item, index) =>
+          `${item.name ?? 'contact'}-${index}`
+        }
+        contentContainerStyle={{
+          paddingHorizontal: 24,
+          paddingBottom: 24,
+        }}
+        renderItem={({ item }) => (
+          <Pressable
+            onPress={() => inspectContact(item)}
+            style={{
+              paddingVertical: 10,
+              borderBottomWidth: 0.5,
+            }}
+          >
+            <ThemedText>{formatName(item)}</ThemedText>
+
+            <ThemedText style={{ opacity: 0.6 }}>
+              {item.phoneNumbers?.[0]?.number ?? 'No phone'}
+            </ThemedText>
+          </Pressable>
+        )}
+      />
     </ThemedView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    flexDirection: 'row',
-  },
-  safeArea: {
-    flex: 1,
-    paddingHorizontal: Spacing.four,
-    alignItems: 'center',
-    gap: Spacing.three,
-    paddingBottom: BottomTabInset + Spacing.three,
-    maxWidth: MaxContentWidth,
-  },
-  heroSection: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    flex: 1,
-    paddingHorizontal: Spacing.four,
-    gap: Spacing.four,
-  },
-  title: {
-    textAlign: 'center',
-  },
-  code: {
-    textTransform: 'uppercase',
-  },
-  stepContainer: {
-    gap: Spacing.three,
-    alignSelf: 'stretch',
-    paddingHorizontal: Spacing.three,
-    paddingVertical: Spacing.four,
-    borderRadius: Spacing.four,
-  },
-});
