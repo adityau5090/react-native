@@ -39,6 +39,12 @@ export default function AppTabs() {
           drawable="ic_menu_compass"
         />
       </NativeTabs.Trigger>
+      <NativeTabs.Trigger name="filePicker">
+        <NativeTabs.Trigger.Label>FilePicker</NativeTabs.Trigger.Label>
+        <NativeTabs.Trigger.Icon
+          drawable="ic_menu_manage"
+        />
+      </NativeTabs.Trigger>
     </NativeTabs>
   );
 }
