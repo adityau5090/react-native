@@ -23,12 +23,22 @@ export default function Index() {
         priority: Notifications.AndroidNotificationPriority.HIGH,
         sticky: true
       },
-      trigger: null,
+      trigger: {
+        type: Notifications.SchedulableTriggerInputTypes.TIME_INTERVAL,
+        seconds: 5,
+        repeats: true
+      },
       });
   }
+
+  async function cancelAllNotifications() {
+    await Notifications.cancelAllScheduledNotificationsAsync();
+  }
+
   return (
     <View style={styles.container}>
       <Button title="Send Notification" onPress={scheduleNotification} />
+      <Button title="Cancel All Notifications" onPress={cancelAllNotifications} />
     </View>
   );
 }
