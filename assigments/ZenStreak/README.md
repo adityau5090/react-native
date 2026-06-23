@@ -272,3 +272,183 @@ Upcoming screens:
 * [ ] Notification center
 * [ ] Permission handling
 * [ ] Settings screen
+
+## 🔔 Notification Architecture
+
+ZenStreak uses both **Local Notifications** and **Push Notifications** to provide an engaging habit-building experience.
+
+### Why Two Types of Notifications?
+
+Different notification types solve different problems.
+
+| Notification Type   | Used For                                            | Internet Required |
+| ------------------- | --------------------------------------------------- | ----------------- |
+| Local Notifications | Habit reminders                                     | No                |
+| Push Notifications  | Streak nudges, announcements, motivational messages | Yes               |
+
+---
+
+## 📱 Local Notifications
+
+Local notifications are scheduled directly on the user's device.
+
+### Use Cases
+
+* Daily habit reminders
+* Weekly habit reminders
+* Personalized reminder schedules
+
+Examples:
+
+```txt
+💧 Drink Water at 8:00 AM
+📚 Read Book at 9:00 PM
+🏋️ Workout at 6:00 PM
+```
+
+### Local Notification Flow
+
+```txt
+User creates habit
+        ↓
+User selects reminder time
+        ↓
+App requests notification permission
+        ↓
+App schedules local notification
+        ↓
+Android/iOS stores notification
+        ↓
+Reminder appears even if app is closed
+```
+
+### Why Local Notifications?
+
+Local notifications were chosen because:
+
+* Reminder times are selected by the user.
+* Notifications should work offline.
+* Notifications should continue working when the app is closed.
+* Scheduling is device-specific.
+
+---
+
+## ☁️ Push Notifications
+
+Push notifications originate from a remote server and are delivered through Expo Push Services.
+
+### Planned Use Cases
+
+* 🔥 Streak nudges
+* 🎉 Feature announcements
+* 🏆 Motivation campaigns
+* 📢 Global app updates
+
+Examples:
+
+```txt
+🔥 You haven't completed any habits today.
+
+🎉 ZenStreak v2.0 is now available.
+
+🏆 Congratulations! You reached a 30-day streak.
+```
+
+### Push Notification Flow
+
+```txt
+Server
+   ↓
+Expo Push API
+   ↓
+Expo Push Service
+   ↓
+User Device
+```
+
+---
+
+## 🔐 Notification Permissions
+
+ZenStreak behaves reactively based on notification permissions.
+
+Possible states:
+
+```txt
+granted
+denied
+undetermined
+```
+
+If permission is denied:
+
+* The app does not crash.
+* Notification scheduling is disabled.
+* A permission denied state is displayed.
+* Users can open device settings to enable notifications.
+
+---
+
+## 🧠 Notification Lifecycle
+
+```txt
+Create Habit
+      ↓
+Request Permission
+      ↓
+Schedule Local Notification
+      ↓
+Receive Notification ID
+      ↓
+Store ID in SQLite
+      ↓
+Load Habits
+      ↓
+User edits habit
+      ↓
+Cancel Existing Notification
+      ↓
+Schedule New Notification
+      ↓
+Store New Notification ID
+      ↓
+User deletes habit
+      ↓
+Cancel Notification
+      ↓
+Delete Habit
+```
+
+---
+
+## 🗄️ Notification Persistence
+
+Every scheduled notification returns a unique identifier.
+
+Example:
+
+```txt
+dc4d7e3f-c031-4b89-aafc-819e9a63689d
+```
+
+Notification IDs are persisted inside SQLite to support:
+
+* Notification cancellation
+* Reminder rescheduling
+* Habit deletion
+* Habit editing
+
+---
+
+## 📦 Current Notification Features
+
+* ✅ Notification permission handling
+* ✅ Local notification scheduling
+* ✅ Daily reminders
+* ✅ Weekly reminders
+* ✅ Notification ID persistence
+* ✅ Notification cancellation
+* ✅ Notification rescheduling support
+* ✅ SQLite integration
+* 🔄 Push notifications (In Progress)
+* 🔄 Deep linking from notifications (In Progress)
