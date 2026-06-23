@@ -1,11 +1,11 @@
 {
   "expo": {
-    "name": "14expoNotifications",
-    "slug": "14expoNotifications",
+    "name": "ZenStreak",
+    "slug": "ZenStreak",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "exponotifications",
+    "scheme": "zenstreak",
     "userInterfaceStyle": "automatic",
     "ios": {
       "icon": "./assets/expo.icon"
@@ -18,7 +18,7 @@
         "monochromeImage": "./assets/images/android-icon-monochrome.png"
       },
       "predictiveBackGestureEnabled": false,
-      "package": "com.adityau.expoNotification",
+      "package": "com.ekaksh.ZenStreak",
       "googleServicesFile": "./google-services.json"
     },
     "web": {
@@ -36,7 +36,12 @@
             "imageWidth": 76
           }
         }
-      ]
+      ],
+      "expo-sqlite",
+      "@react-native-community/datetimepicker",
+      "expo-background-task",
+      "expo-localization",
+      "expo-secure-store"
     ],
     "experiments": {
       "typedRoutes": true,
@@ -45,9 +50,9 @@
     "extra": {
       "router": {},
       "eas": {
-        "projectId": "af650c19-14c7-47dc-9bc9-4f38a8159c1c"
+        "projectId": "f43cddbd-35b0-46b8-a78b-be3604e737c2"
       }
     },
-    "owner": "aditya5090"
+    "owner": "ekaksh"
   }
 }

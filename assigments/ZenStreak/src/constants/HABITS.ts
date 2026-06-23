@@ -1,0 +1,17 @@
+export const PRESET_HABITS = [
+  { title: "Drink Water", emoji: "💧" },
+  { title: "Read Books", emoji: "📚" },
+  { title: "Morning Run", emoji: "🏃" },
+  { title: "Go For Walk", emoji: "🚶" },
+  { title: "Workout", emoji: "🏋️" },
+  { title: "Meditate", emoji: "🧘" },
+  { title: "Write Blog", emoji: "✍️" },
+  { title: "Code 1 Hour", emoji: "💻" },
+  { title: "Learn Something New", emoji: "🧠" },
+  { title: "Drink Coffee", emoji: "☕" },
+  { title: "Sleep Early", emoji: "😴" },
+  { title: "Practice Music", emoji: "🎸" },
+  { title: "Healthy Meal", emoji: "🥗" },
+  { title: "Journal Writing", emoji: "📝" },
+  { title: "Custom Habit", emoji: "✨" },
+];

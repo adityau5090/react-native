@@ -35,10 +35,15 @@ export default function Index() {
     await Notifications.cancelAllScheduledNotificationsAsync();
   }
 
+  async function clearAll() {
+    await Notifications.dismissAllNotificationsAsync();
+  }
+
   return (
     <View style={styles.container}>
       <Button title="Send Notification" onPress={scheduleNotification} />
       <Button title="Cancel All Notifications" onPress={cancelAllNotifications} />
+      <Button title="Clear All" onPress={clearAll} />
     </View>
   );
 }
@@ -48,5 +53,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
+    gap: 5
   },
 });

@@ -1,0 +1,28 @@
+# Dependencies
+node_modules/
+
+# Expo
+.expo/
+.web-build/
+
+# Version control
+.git/
+.gitignore
+
+# Logs
+*.log
+npm-debug.*
+yarn-debug.*
+yarn-error.*
+
+# Editor files
+.vscode/
+.idea/
+
+# macOS
+.DS_Store
+
+# Documentation (optional)
+README.md
+CLAUDE.md
+AGENTS.md

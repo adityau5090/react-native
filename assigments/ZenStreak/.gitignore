@@ -3,8 +3,6 @@
 # dependencies
 node_modules/
 
-**/node_modules/
-**/.expo/
 # Expo
 .expo/
 dist/
@@ -43,6 +41,3 @@ app-example
 # generated native folders
 /ios
 /android
-14expoNotifications/google-services.json
-14expoNotifications/myfirstproject-f74b0-firebase-adminsdk-fbsvc-6e08a4078a.json
-assigments/ZenStreak/zenstreak-786fb-firebase-adminsdk-fbsvc-d3995ae7cd.json
