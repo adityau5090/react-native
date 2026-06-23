@@ -7,6 +7,8 @@ import { PhotoAsset } from "@/types/photo"
 import  { GalleryLoader } from "./GalleryLoader"
 import { useSelectionStore } from "@/store/selection.store"
 import { mediumImpact, selectionHaptic } from "@/services/haptics.service"
+import { router } from "expo-router"
+import { usePhotoViewerStore } from "@/store/photoViewer.store"
 
 interface Props{
     photos: PhotoAsset[],
@@ -17,6 +19,7 @@ interface Props{
 const MasonryGallery = ({photos, onLoadMore, loadingMore}: Props) => {
     const colors = useTheme()
     const { left, right } = useMasonry(photos)
+    const { setCurrentPhoto } = usePhotoViewerStore()
 
     const {selectedIds, isSelectionMode, toggleSelection, enterSelectionMode} = useSelectionStore();
 
@@ -83,10 +86,17 @@ const MasonryGallery = ({photos, onLoadMore, loadingMore}: Props) => {
                             height={getMasonryHeight(photo.width, photo.height)}
                             selected={selectedIds.includes(photo.id)}
                             onPress={async () => {
-                                if(!isSelectionMode) return;
-                                await selectionHaptic();
+                                if(isSelectionMode){
+                                    await selectionHaptic();
+                                    toggleSelection(photo.id)
+                                    return;
+                                }
 
-                                toggleSelection(photo.id)
+                                setCurrentPhoto(photo);
+                                router.push({
+                                    pathname: "/photo/[id]",
+                                    params: { id: photo.id }
+                                })
                             }}
                             onLongPress={async () => {
                                 await mediumImpact()
@@ -104,10 +114,17 @@ const MasonryGallery = ({photos, onLoadMore, loadingMore}: Props) => {
                             height={getMasonryHeight(photo.width, photo.height)}
                             selected={selectedIds.includes(photo.id)}
                             onPress={async () => {
-                                if(!isSelectionMode) return;
-                                await selectionHaptic();
+                                if(isSelectionMode){
+                                    await selectionHaptic();
+                                    toggleSelection(photo.id)
+                                    return;
+                                }
 
-                                toggleSelection(photo.id)
+                                setCurrentPhoto(photo);
+                                router.push({
+                                    pathname: "/photo/[id]",
+                                    params: { id: photo.id }
+                                })
                             }}
                             onLongPress={async () => {
                                 await mediumImpact()    

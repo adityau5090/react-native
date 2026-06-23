@@ -19,8 +19,12 @@ const useSelectionStore = create<SelectionStore>((set) => ({
     toggleSelection: (id) => set((state) => {
         const exists = state.selectedIds.includes(id);
 
+        const updatedIds = exists ? 
+        state.selectedIds.filter((item) => item !== id): [...state.selectedIds, id];
+
         return {
-            selectedIds: exists ? state.selectedIds.filter((item) => item !== id) : [...state.selectedIds, id]
+            selectedIds: updatedIds,
+            isSelectionMode: updatedIds.length > 0,
         }
     }),
 

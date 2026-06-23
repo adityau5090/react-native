@@ -2,41 +2,22 @@ import { Tabs } from "expo-router";
 import { BlurView }  from "expo-blur"
 import Ionicons  from "@expo/vector-icons/Ionicons"
 import { useTheme } from "@/hooks/useTheme";
+import CustomTabBar from "@/components/navigation/CustomTabBar";
 
 export default function TabLayout() {
     const colors = useTheme();
 
     return (
-        <Tabs 
-            screenOptions={{ 
-                headerShown: false, 
-                tabBarActiveTintColor: colors.primary, 
-                tabBarInactiveTintColor: colors.subText,
-
-                tabBarStyle: {
-                    position: "absolute",
-                    bottom: 10,
-                    left: 16,
-                    right: 16,
-                    height: 75,
-                    borderTopWidth: 0,
-                    backgroundColor: "transparent",
-                    elevation: 0,
-                },
-                tabBarBackground: () => (
-                    <BlurView
-                        intensity={30}
-                        tint="dark"
-                        style={{
-                        flex: 1,
-                        borderRadius: 30,
-                        overflow: "hidden",
-                        }}
-                    />
-                ),
-                
-            }}
-        >
+        <Tabs
+  screenOptions={{
+    headerShown: false,
+  }}
+  tabBar={(props) => (
+    <CustomTabBar
+      {...props}
+    />
+  )}
+>
             <Tabs.Screen
                 name="index"
                 options={{
