@@ -8,7 +8,9 @@ import adminRoutes from "./routes/admin.routes.js";
 
 const App = express();
 
-App.use(cors());
+App.use(cors({
+  origin: "*",
+}));
 
 App.use(express.json());
 
