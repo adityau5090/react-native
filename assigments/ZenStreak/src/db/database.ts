@@ -21,4 +21,13 @@ export async function initDB() {
     );
 
   `);
+
+  
+  db.execSync(`
+  CREATE TABLE IF NOT EXISTS habit_completions (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    habitId TEXT NOT NULL,
+    completedDate TEXT NOT NULL
+  );
+`);
 } 

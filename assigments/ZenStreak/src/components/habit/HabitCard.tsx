@@ -10,7 +10,7 @@ import { useTheme } from "@/theme";
 import { Habit } from "@/constants/habit";
 import { Alert } from "react-native";
 import { calculateStreak } from "@/utils/streak";
-import { updateHabitProgress } from "@/db/habits.repository";
+import { saveCompletion, updateHabitProgress } from "@/db/habits.repository";
 import { useHabitStore } from "@/store/habit.store";
 import { deleteHabit } from "@/db/habits.repository";
 import { cancelNotifications } from "@/lib/notifications/schedular";
@@ -38,9 +38,16 @@ const HabitCard = ({ habit }: Props) => {
       return;
     }
      
-    updateHabitProgress(habit.id, habit.streak, habit.longestStreak, habit.lastCompletedDate)
+    updateHabitProgress(habit.id, result.streak, result.longestStreak, result.lastCompletedDate)
 
     updateHabit(habit.id, {...result, completedToday: true})
+
+    const completionDate =
+  result.lastCompletedDate!
+    .split("T")[0];
+
+    saveCompletion(habit.id, completionDate!)
+    // console.log("Save completion : ", habit.id, result.lastCompletedDate)
   }
 
   const handleDelete = () => {

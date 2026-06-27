@@ -108,3 +108,43 @@ export function updateHabitProgress(
     ]
   );
 }
+
+export function saveCompletion(
+  habitId: string,
+  completedDate: string
+) {
+  const existing = db.getFirstSync(
+    `
+    SELECT * FROM habit_completions
+    WHERE habitId = ?
+    AND completedDate = ?
+    `,
+    [habitId, completedDate]
+  );
+
+  if (existing) return;
+  db.runSync(
+    `
+      INSERT INTO habit_completions (
+        habitId,
+        completedDate
+      )
+      VALUES (?, ?)
+    `,
+    [habitId, completedDate]
+  );
+}
+
+export function getCompletionHistory() {
+  const data = db.getAllSync(`
+    SELECT
+      completedDate,
+      COUNT(*) as count
+    FROM habit_completions
+    GROUP BY completedDate
+  `);
+
+  // console.log("Completion History:", data);
+
+  return data;
+}

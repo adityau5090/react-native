@@ -8,13 +8,15 @@ import {
 import Screen from "@/components/ui/Screen";
 import { useTheme } from "@/theme";
 import { StatCard } from "@/components/analytics/StatCard";
-import {StreakHeatmap} from "@/components/analytics/StreakHeatMap";
+import { GithubHeatmap } from "@/components/analytics/StreakHeatMap";
 import {WeeklyProgress} from "@/components/analytics/WeeklyProgress";
 import {Achievements} from "@/components/analytics/Achievement";
+import { useAnalytics } from "@/hooks/useAnalytics";
+
 
 export default function AnalyticsScreen() {
   const colors = useTheme();
-
+  const {totalHabits,currentStreak,longestStreak,completedToday,completionRate} = useAnalytics();
   return (
     <Screen>
       <ScrollView
@@ -26,25 +28,25 @@ export default function AnalyticsScreen() {
         <View style={styles.statsGrid}>
           <StatCard
             emoji="🔥"
-            value={12}
+            value={currentStreak}
             label="Current"
           />
 
           <StatCard
             emoji="🏆"
-            value={30}
+            value={longestStreak}
             label="Longest"
           />
 
           <StatCard
             emoji="⭐"
-            value={8}
+            value={totalHabits}
             label="Habits"
           />
 
           <StatCard
             emoji="✅"
-            value={82}
+            value={completionRate}
             label="Complete %"
           />
         </View>
@@ -69,7 +71,7 @@ export default function AnalyticsScreen() {
             Consistency
           </Text>
 
-          <StreakHeatmap />
+          <GithubHeatmap />
         </View>
 
         {/* Weekly */}
@@ -117,6 +119,7 @@ export default function AnalyticsScreen() {
 
           <Achievements />
         </View>
+        
       </ScrollView>
     </Screen>
   );

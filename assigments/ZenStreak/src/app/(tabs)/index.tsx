@@ -42,7 +42,8 @@ export default function HomeScreen() {
   )
   return (
     <Screen>
-      <ScrollView showsVerticalScrollIndicator={false}  >
+      <ScrollView showsVerticalScrollIndicator={false} 
+      style={{ marginBottom : 70 }} >
         <View style={styles.header}>
           <View style={styles.row}>
             <View>
