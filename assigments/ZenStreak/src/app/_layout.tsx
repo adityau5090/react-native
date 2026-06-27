@@ -4,6 +4,7 @@ import { initDB } from "@/db/database";
 import { useEffect } from "react";
 import { Stack } from "expo-router";
 import { setupNotificationListeners } from "@/lib/notifications/handler";
+import "@/lib/google"
 
 export default function RootLayout() {
   useEffect(() => {

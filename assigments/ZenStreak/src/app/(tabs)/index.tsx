@@ -11,18 +11,29 @@ import { router } from "expo-router";
 import { getAllHabits } from "@/db/habits.repository";
 import { useHabitStore } from "@/store/habit.store";
 import { useFocusEffect } from "expo-router";
-import React from "react";
+import React, { useEffect } from "react";
+import { useAuthStore } from "@/store/auth.store";
+import { GoogleSignin } from "@react-native-google-signin/google-signin";
 
 export default function HomeScreen() {
+  
   const colors = useTheme();
   const greeting = getGreeting();
-
+  const logout = useAuthStore(state => state.logout);
+ 
   const toggleTheme = useThemeStore((state) => state.toggleTheme);
   const mode = useThemeStore((state) => state.mode)
 
   const habits = useHabitStore((state) => state.habits)
   const setHabits = useHabitStore((state) => state.setHabits)
 
+  const handleLogout = async () => {
+  await GoogleSignin.signOut();
+
+  await logout();
+
+  router.replace("/auth/login");
+};
   useFocusEffect(
     React.useCallback(() => {
       const data = getAllHabits();

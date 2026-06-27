@@ -4,14 +4,18 @@ import { BlurView } from "expo-blur";
 import { useTheme } from "@/theme";
 import { View } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import AppHeader from "@/components/ui/AppHeader";
+import { StatusBar } from "expo-status-bar";
 
 export default function TabLayout() {
     const colors = useTheme();
 
     return (
-        <Tabs
+        <>
+            <StatusBar style="dark" />
+            <Tabs
             screenOptions={{
-                headerShown: false,
+                header: () => <AppHeader />,
                 tabBarShowLabel: false,
 
                 tabBarItemStyle: {
@@ -144,5 +148,6 @@ export default function TabLayout() {
                 }}
             />
         </Tabs>
+        </>
     );
 }

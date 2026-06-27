@@ -1,170 +1,144 @@
-import { useEffect } from "react";
 import {
+  ScrollView,
   View,
   Text,
-  Pressable,
-  Alert,
   StyleSheet,
 } from "react-native";
 
-import * as Notifications from "expo-notifications";
+import Screen from "@/components/ui/Screen";
+import { useTheme } from "@/theme";
+import { StatCard } from "@/components/analytics/StatCard";
+import {StreakHeatmap} from "@/components/analytics/StreakHeatMap";
+import {WeeklyProgress} from "@/components/analytics/WeeklyProgress";
+import {Achievements} from "@/components/analytics/Achievement";
 
-Notifications.setNotificationHandler({
-  handleNotification: async () => ({
-    shouldPlaySound: true,
-    shouldShowBanner: true,
-    shouldShowList: true,
-    shouldSetBadge: false,
-  }),
-});
+export default function AnalyticsScreen() {
+  const colors = useTheme();
 
-const Analytics = () => {
-  useEffect(() => {
-    requestPermissions();
-  }, []);
-
-  const requestPermissions = async () => {
-    const { status: existingStatus } =
-      await Notifications.getPermissionsAsync();
-
-    let finalStatus = existingStatus;
-
-    if (existingStatus !== "granted") {
-      const { status } =
-        await Notifications.requestPermissionsAsync();
-
-      finalStatus = status;
-    }
-
-    if (finalStatus !== "granted") {
-      Alert.alert(
-        "Permission Denied",
-        "Please enable notifications in settings."
-      );
-
-      return;
-    }
-
-    console.log("Notification Permission Granted ✅");
-  };
-
-  const sendNotification = async () => {
-    try {
-      const id =
-        await Notifications.scheduleNotificationAsync({
-          content: {
-            title: "🔥 ZenStreak",
-            body: "Time to build your streak!",
-
-            data: {
-              screen: "habit",
-            },
-          },
-
-          trigger: {
-            type:
-              Notifications.SchedulableTriggerInputTypes.TIME_INTERVAL,
-
-            seconds: 5,
-          },
-        });
-
-      console.log("Scheduled ID:", id);
-
-      Alert.alert(
-        "Success",
-        "Notification scheduled for 5 seconds."
-      );
-    } catch (error) {
-      console.log(error);
-
-      Alert.alert(
-        "Error",
-        JSON.stringify(error)
-      );
-    }
-  };
-
-  const getScheduled = async () => {
-    const notifications =
-      await Notifications.getAllScheduledNotificationsAsync();
-
-    console.log(
-      "Scheduled Notifications:",
-      notifications
-    );
-
-    Alert.alert(
-      "Check Metro Logs",
-      `Found ${notifications.length} notifications`
-    );
-  };
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>
-        Notification Test
-      </Text>
-
-      <Pressable
-        style={styles.button}
-        onPress={sendNotification}
+    <Screen>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        style={{marginBottom: 60}}
       >
-        <Text style={styles.buttonText}>
-          Send Test Notification
-        </Text>
-      </Pressable>
+        {/* Stats */}
 
-      <Pressable
-        style={styles.button}
-        onPress={getScheduled}
-      >
-        <Text style={styles.buttonText}>
-          Check Scheduled Notifications
-        </Text>
-      </Pressable>
-    </View>
+        <View style={styles.statsGrid}>
+          <StatCard
+            emoji="🔥"
+            value={12}
+            label="Current"
+          />
+
+          <StatCard
+            emoji="🏆"
+            value={30}
+            label="Longest"
+          />
+
+          <StatCard
+            emoji="⭐"
+            value={8}
+            label="Habits"
+          />
+
+          <StatCard
+            emoji="✅"
+            value={82}
+            label="Complete %"
+          />
+        </View>
+
+        {/* Heatmap */}
+
+        <View
+          style={[
+            styles.section,
+            {
+              backgroundColor:
+                colors.card,
+            },
+          ]}
+        >
+          <Text
+            style={[
+              styles.title,
+              { color: colors.text },
+            ]}
+          >
+            Consistency
+          </Text>
+
+          <StreakHeatmap />
+        </View>
+
+        {/* Weekly */}
+
+        <View
+          style={[
+            styles.section,
+            {
+              backgroundColor:
+                colors.card,
+            },
+          ]}
+        >
+          <Text
+            style={[
+              styles.title,
+              { color: colors.text },
+            ]}
+          >
+            Weekly Progress
+          </Text>
+
+          <WeeklyProgress />
+        </View>
+
+        {/* Achievements */}
+
+        <View
+          style={[
+            styles.section,
+            {
+              backgroundColor:
+                colors.card,
+            },
+          ]}
+        >
+          <Text
+            style={[
+              styles.title,
+              { color: colors.text },
+            ]}
+          >
+            Achievements
+          </Text>
+
+          <Achievements />
+        </View>
+      </ScrollView>
+    </Screen>
   );
 }
 
-export default Analytics
-
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
+  statsGrid: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "space-between",
+    gap: 5,
+  },
 
-    justifyContent: "center",
-
+  section: {
+    marginTop: 25,
+    borderRadius: 24,
     padding: 20,
   },
 
   title: {
-    fontSize: 28,
-
-    fontWeight: "bold",
-
-    textAlign: "center",
-
-    marginBottom: 40,
-  },
-
-  button: {
-    backgroundColor: "#6C63FF",
-
-    padding: 18,
-
-    borderRadius: 20,
-
-    alignItems: "center",
-
+    fontSize: 20,
+    fontWeight: "700",
     marginBottom: 20,
   },
-
-  buttonText: {
-    color: "#fff",
-
-    fontSize: 18,
-
-    fontWeight: "600",
-  },
 });
-// After adding this

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "864185782993",
+    "project_id": "zenstreak-786fb",
+    "storage_bucket": "zenstreak-786fb.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:864185782993:android:3b3111137e9e80dca92bf0",
+        "android_client_info": {
+          "package_name": "com.ekaksh.ZenStreak"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAtnW60EBpiVJAxPiXciP6c8r9ScFikx5M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

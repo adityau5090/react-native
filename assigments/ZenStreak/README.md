@@ -452,3 +452,29 @@ Notification IDs are persisted inside SQLite to support:
 * ✅ SQLite integration
 * 🔄 Push notifications (In Progress)
 * 🔄 Deep linking from notifications (In Progress)
+
+Splash Screen
+      ↓
+Check Local Session
+      ↓
+Logged In?
+   ↓          ↓
+ Yes         No
+   ↓          ↓
+ Home      Login Screen
+                ↓
+         Continue with Google
+                ↓
+        Google Authentication
+                ↓
+         Get User Information
+                ↓
+      Get Expo Push Token
+                ↓
+      Send to Backend API
+                ↓
+     Save User in MongoDB
+                ↓
+ Save User in SQLite/AsyncStorage
+                ↓
+            Home Screen
