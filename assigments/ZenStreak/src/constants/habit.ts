@@ -17,6 +17,9 @@ export interface Habit {
 
   streak: number;
 
+  reminderMode?: "once" | "interval";
+  intervalHours?: number;
+
   longestStreak: number;
 
   lastCompletedDate: string | null;

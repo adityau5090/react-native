@@ -31,7 +31,7 @@ export default function LoginScreen() {
         console.error("Failed to get user data from Google Sign In");
         return;
       }
-      console.log("User :", user)
+      // console.log("User :", user)
       const expoPushToken = await registerForPushNotificationsAsync();
 
       const res = await fetch("https://zenstreak-backend.onrender.com/api/auth/google-login",

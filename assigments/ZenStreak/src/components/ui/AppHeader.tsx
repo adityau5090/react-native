@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingHorizontal: 20,
     // paddingTop: 10,
-    paddingBottom: 15,
+    // paddingBottom: 15,
   },
 
   greeting: {
@@ -85,8 +85,8 @@ const styles = StyleSheet.create({
   },
 
   avatar: {
-    width: 50,
-    height: 50,
+    width: 40,
+    height: 40,
     borderRadius: 25,
   },
 });
