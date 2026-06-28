@@ -1,9 +1,9 @@
-import { View, Text, StyleSheet, Pressable, Image } from "react-native";
+import { View, Text, StyleSheet, Pressable, Image, ActivityIndicator } from "react-native";
 import { router } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import Screen from "@/components/ui/Screen";
 import { useTheme } from "@/theme";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import { registerForPushNotificationsAsync } from "@/lib/notifications/registerForPushNotification";
 import { useAuthStore } from "@/store/auth.store";
@@ -11,35 +11,29 @@ import { useAuthStore } from "@/store/auth.store";
 export default function LoginScreen() {
   const colors = useTheme();
   const setAuth = useAuthStore((state) => state.setAuth);
-
+  const [loading, setLoading] = useState(false)
 
   const handleGoogleSignIn = async () => {
     try {
+      setLoading(true)
       console.log("Starting Google Sign In");
 
-
       await GoogleSignin.signOut();
-
-      await GoogleSignin.hasPlayServices({
-        showPlayServicesUpdateDialog: true,
-      });
+      await GoogleSignin.hasPlayServices({showPlayServicesUpdateDialog: true});
 
       const response = await GoogleSignin.signIn()
-      // console.log("Response by google :",response);
       const user = response?.data?.user;
       if (!user) {
         console.error("Failed to get user data from Google Sign In");
         return;
       }
-      // console.log("User :", user)
       const expoPushToken = await registerForPushNotificationsAsync();
 
       const res = await fetch("https://zenstreak-backend.onrender.com/api/auth/google-login",
         {
           method: "POST",
           headers: {
-            "Content-Type":
-              "application/json",
+            "Content-Type": "application/json",
           },
 
           body: JSON.stringify({
@@ -53,24 +47,21 @@ export default function LoginScreen() {
       );
 
       const data = await res.json();
-      
-      console.log("Backend Response:", data);
 
       await setAuth(data.user, data.token)
 
       router.replace("/(tabs)")
 
     } catch (error) {
-      console.log(
-        "Google Sign In Error:",
-        error
-      );
+      console.log("Google Sign In Error:",error);
+    }
+    finally{
+      setLoading(false)
     }
   };
   return (
     <Screen>
       <View style={styles.container}>
-        {/* Logo Section */}
 
         <View style={styles.hero}>
           <Text style={styles.logo}>🔥</Text>
@@ -95,8 +86,6 @@ export default function LoginScreen() {
           </Text>
         </View>
 
-        {/* Features */}
-
         <View style={styles.features}>
           <Feature
             icon="checkmark-circle"
@@ -117,28 +106,38 @@ export default function LoginScreen() {
           />
         </View>
 
-        {/* Google Button */}
-
         <Pressable
-          style={[
-            styles.googleButton,
-            {
-              backgroundColor: colors.primary,
-            },
-          ]}
-          // disabled={!request}
-          onPress={handleGoogleSignIn}
-        >
-          <Ionicons
-            name="logo-google"
-            size={24}
-            color="#fff"
-          />
+  style={[
+    styles.googleButton,
+    {
+      backgroundColor: loading
+        ? "#999"
+        : colors.primary,
+      opacity: loading ? 0.8 : 1,
+    },
+  ]}
+  disabled={loading}
+  onPress={handleGoogleSignIn}
+>
+  {loading ? (
+    <ActivityIndicator
+      size="small"
+      color="#fff"
+    />
+  ) : (
+    <>
+      <Ionicons
+        name="logo-google"
+        size={24}
+        color="#f1e1d6"
+      />
 
-          <Text style={styles.googleText}>
-            Continue with Google
-          </Text>
-        </Pressable>
+      <Text style={styles.googleText}>
+        Continue with Google
+      </Text>
+    </>
+  )}
+</Pressable>
 
         <Text
           style={[
@@ -146,23 +145,14 @@ export default function LoginScreen() {
             { color: colors.textSecondary },
           ]}
         >
-          By continuing you agree to our Terms &
-          Privacy Policy.
+          By continuing you agree to our Terms & Privacy Policy.
         </Text>
       </View>
     </Screen>
   );
 }
 
-function Feature({
-  icon,
-  text,
-  color,
-}: {
-  icon: any;
-  text: string;
-  color: string;
-}) {
+function Feature({icon,text,color}: {icon: any; text: string; color: string;}) {
   return (
     <View style={styles.featureRow}>
       <Ionicons
@@ -248,5 +238,6 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontSize: 13,
     lineHeight: 20,
-  },
+  }
+  
 });

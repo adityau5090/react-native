@@ -28,8 +28,9 @@ const HabitCard = ({ habit }: Props) => {
 
   
   const handleComplete = () => {
+    // console.log("Before Completion:", habit);
     const result = calculateStreak(habit.streak, habit.longestStreak, habit.lastCompletedDate)
-
+    // console.log("Result:", result);
     if(!result) {
       Alert.alert(
         "Already Completed",

@@ -1,23 +1,15 @@
-
 import { StyleSheet } from "react-native";
-
 import { useTheme } from "@/theme";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-export default function Screen({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function Screen({children}: {children: React.ReactNode}) {
   const colors = useTheme();
 
   return (
     <SafeAreaView
       style={[
         styles.container,
-        {
-          backgroundColor: colors.background,
-        },
+        {backgroundColor: colors.background},
       ]}
     >
       {children}

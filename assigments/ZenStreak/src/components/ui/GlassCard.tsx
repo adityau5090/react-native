@@ -3,11 +3,7 @@ import { StyleSheet } from "react-native";
 
 import { useTheme } from "@/theme";
 
-const  GlassCard = ({
-  children,
-}: {
-  children: React.ReactNode;
-}) => {
+const  GlassCard = ({children}: {children: React.ReactNode}) => {
   const colors = useTheme();
 
   return (

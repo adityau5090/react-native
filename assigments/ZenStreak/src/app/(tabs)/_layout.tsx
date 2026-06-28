@@ -5,7 +5,6 @@ import { useTheme } from "@/theme";
 import { View } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import AppHeader from "@/components/ui/AppHeader";
-import { StatusBar } from "expo-status-bar";
 import { useAuthStore } from "@/store/auth.store";
 
 export default function TabLayout() {
@@ -13,11 +12,10 @@ export default function TabLayout() {
     const user = useAuthStore((state) => state.user);
 
     const isAdmin = user?.email === "ayus135os@gmail.com";
-    // console.log(isAdmin)
+
 
     return (
         <>
-            <StatusBar style="dark" />
             <Tabs
                 screenOptions={{
                     header: () => <AppHeader />,
@@ -152,7 +150,7 @@ export default function TabLayout() {
                         ),
                     }}
                 />
-                {isAdmin && (
+                <Tabs.Protected guard={isAdmin}>
                     <Tabs.Screen
                         name="admin"
                         options={{
@@ -166,7 +164,7 @@ export default function TabLayout() {
                             ),
                         }}
                     />
-                )}
+                </Tabs.Protected>
             </Tabs>
         </>
     );

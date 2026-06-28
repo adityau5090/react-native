@@ -1,7 +1,6 @@
 import { useTheme } from "@/theme";
 import { StyleSheet, Text, View } from "react-native";
 
-
 interface Props {
     value: number | string;
     title: string;

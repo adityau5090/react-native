@@ -102,7 +102,7 @@ export async function scheduleIntervalNotifications(
     );
 
     const minute =
-      (currentMinutes % 60) + 1;
+      (currentMinutes % 60) ;
       console.log(minute)
 
     const id =

@@ -44,6 +44,8 @@ export function getAllHabits() {
   `);
   return habits.map((habit: any) => ({
     ...habit,
+    completedToday:
+      Boolean(habit.completedToday),
 
     weekdays: JSON.parse(habit.weekdays || "[]"),
 
@@ -89,7 +91,8 @@ export function updateHabitProgress(
   id: string,
   streak: number,
   longestStreak: number,
-  lastCompletedDate: string | null
+  lastCompletedDate: string | null,
+
 ) {
   db.runSync(
     `
@@ -97,6 +100,7 @@ export function updateHabitProgress(
       SET
         streak = ?,
         longestStreak = ?,
+        completedToday = 1,
         lastCompletedDate = ?
       WHERE id = ?
     `,

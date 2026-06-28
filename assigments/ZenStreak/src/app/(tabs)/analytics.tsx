@@ -1,16 +1,10 @@
-import {
-  ScrollView,
-  View,
-  Text,
-  StyleSheet,
-} from "react-native";
-
+import {ScrollView,View,Text,StyleSheet} from "react-native";
 import Screen from "@/components/ui/Screen";
 import { useTheme } from "@/theme";
 import { StatCard } from "@/components/analytics/StatCard";
 import { GithubHeatmap } from "@/components/analytics/StreakHeatMap";
-import {WeeklyProgress} from "@/components/analytics/WeeklyProgress";
-import {Achievements} from "@/components/analytics/Achievement";
+import { WeeklyProgress } from "@/components/analytics/WeeklyProgress";
+import { Achievements } from "@/components/analytics/Achievement";
 import { useAnalytics } from "@/hooks/useAnalytics";
 
 
@@ -23,7 +17,6 @@ export default function AnalyticsScreen() {
         showsVerticalScrollIndicator={false}
         style={{marginBottom: 60}}
       >
-        {/* Stats */}
 
         <View style={styles.statsGrid}>
           <StatCard
@@ -51,15 +44,10 @@ export default function AnalyticsScreen() {
           />
         </View>
 
-        {/* Heatmap */}
-
         <View
           style={[
             styles.section,
-            {
-              backgroundColor:
-                colors.card,
-            },
+            {backgroundColor:colors.card},
           ]}
         >
           <Text
@@ -74,15 +62,10 @@ export default function AnalyticsScreen() {
           <GithubHeatmap />
         </View>
 
-        {/* Weekly */}
-
         <View
           style={[
             styles.section,
-            {
-              backgroundColor:
-                colors.card,
-            },
+            {backgroundColor:colors.card},
           ]}
         >
           <Text
@@ -97,15 +80,10 @@ export default function AnalyticsScreen() {
           <WeeklyProgress />
         </View>
 
-        {/* Achievements */}
-
         <View
           style={[
             styles.section,
-            {
-              backgroundColor:
-                colors.card,
-            },
+            {backgroundColor:colors.card},
           ]}
         >
           <Text

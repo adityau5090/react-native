@@ -1,21 +1,20 @@
-import { useState } from "react";
-import { Pressable, ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
 import { GlassCard } from "@/components/ui/GlassCard";
 import Screen from "@/components/ui/Screen";
+import { Habit } from "@/constants/habit";
 import { PRESET_HABITS } from "@/constants/HABITS";
+import { createHabit, getAllHabits } from "@/db/habits.repository";
+import { useNotifications } from "@/hooks/useNotifications";
+import { getMotivationalMessage } from "@/lib/notifications/message";
+import { scheduleIntervalNotifications, scheduleSmartNotification, scheduleWeeklyNotification } from "@/lib/notifications/schedular";
+import { useHabitStore } from "@/store/habit.store";
 import { useTheme } from "@/theme";
 import { Ionicons } from "@expo/vector-icons";
 import DateTimePicker from "@react-native-community/datetimepicker";
-import { Alert } from "react-native";
-import uuid from "react-native-uuid";
-import { router } from "expo-router";
-import { createHabit } from "@/db/habits.repository";
-import { Habit } from "@/constants/habit";
-import { useHabitStore } from "@/store/habit.store";
-import { useNotifications } from "@/hooks/useNotifications";
-import { scheduleIntervalNotifications, scheduleSmartNotification, scheduleWeeklyNotification } from "@/lib/notifications/schedular";
 import * as Linking from "expo-linking";
-import { getMotivationalMessage } from "@/lib/notifications/message";
+import { router } from "expo-router";
+import { useState } from "react";
+import { Alert, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
+import uuid from "react-native-uuid";
 
 const EMOJIS = [
   "💧",
@@ -77,15 +76,12 @@ export default function NewHabitScreen() {
   const habitId = uuid.v4();
 
   const [emoji, setEmoji] = useState("💻");
-
   const [title, setTitle] = useState("");
 
   const [frequency, setFrequency] = useState<"daily" | "weekly">("daily");
-
   const [weekdays, setWeekdays] = useState<number[]>([]);
 
   const [showHabitDropdown, setShowHabitDropdown] = useState(false);
-
   const [selectedHabit, setSelectedHabit] = useState("Select Habit");
   const [showEmojiDropdown, setShowEmojiDropdown] = useState(false);
 
@@ -94,15 +90,12 @@ export default function NewHabitScreen() {
   const [intervalOption, setIntervalOption] =useState("15 minutes");
 
   const [showTimePicker, setShowTimePicker] = useState(false);
-
   const { granted, requestPermission } = useNotifications();
   const addHabit = useHabitStore((state) => state.addHabit);
 
   const toggleDay = (index: number) => {
     if (weekdays.includes(index)) {
-      setWeekdays(
-        weekdays.filter((day) => day !== index)
-      );
+      setWeekdays(weekdays.filter((day) => day !== index));
     } else {
       setWeekdays([...weekdays, index]);
     }
@@ -111,34 +104,25 @@ export default function NewHabitScreen() {
   const handleSaveHabit = async () => {
 
     try {
-
-
       if (selectedHabit === "Select Habit") {
         Alert.alert(
           "Habit Required",
           "Please select a habit first."
         );
-
-        return;
+      return;
       }
+
       const habitName = selectedHabit === "Custom Habit" ? title.trim() : selectedHabit.trim();
 
-      
       if (!habitName) {
         Alert.alert(
           "Habit Required",
           "Please select or enter a habit."
         );
-
-        return;
+      return;
       }
 
-      
-
-      if (
-        frequency === "weekly" &&
-        weekdays.length === 0
-      ) {
+      if (frequency === "weekly" && weekdays.length === 0) {
         Alert.alert(
           "No Days Selected",
           "Select at least one weekday."
@@ -147,65 +131,48 @@ export default function NewHabitScreen() {
         return;
       }
 
-      // Permission
-
       let hasPermission = granted;
 
-      if (!hasPermission) {
-        hasPermission = await requestPermission();
-      }
-
-
+      if (!hasPermission) {hasPermission = await requestPermission();}
       let notificationIds: string[] = [];
-
-      // Schedule notifications
-
-      
 
       if (hasPermission) {
         const hour = reminderTime.getHours();
-
         const minute = reminderTime.getMinutes();
 
         if (frequency === "daily") {
-
           const tempHabit: Habit = {
-    id: habitId,
-    title: habitName,
-    emoji,
-    frequency,
-    weekdays,
-    reminderHour: hour,
-    reminderMinute: minute,
-    reminderMode,
-    streak: 0,
-    longestStreak: 0,
-    lastCompletedDate: null,
-    completedToday: false,
-    notificationIds: [],
-    createdAt: new Date().toISOString(),
-  };
+            id: habitId,
+            title: habitName,
+            emoji,
+            frequency,
+            weekdays,
+            reminderHour: hour,
+            reminderMinute: minute,
+            reminderMode,
+            streak: 0,
+            longestStreak: 0,
+            lastCompletedDate: null,
+            completedToday: false,
+            notificationIds: [],
+            createdAt: new Date().toISOString(),
+          };
 
-          const id = await scheduleSmartNotification(
-            tempHabit
-          );
-
+          const id = await scheduleSmartNotification(tempHabit);
 
           if (reminderMode === "interval") {
-  const intervalMinutes =
-    parseInterval(intervalOption);
+            const intervalMinutes = parseInterval(intervalOption);
 
-  notificationIds =
-    await scheduleIntervalNotifications(
-      `${emoji} ${habitName}`,
-      getMotivationalMessage(
-        tempHabit
-      ),
-      intervalMinutes,
-      hour,
-      minute,
-      habitId
-    );
+          notificationIds = await scheduleIntervalNotifications(
+            `${emoji} ${habitName}`,
+            getMotivationalMessage(
+              tempHabit
+            ),
+            intervalMinutes,
+            hour,
+            minute,
+            habitId
+          );
 }
 
           notificationIds = [id];
@@ -213,32 +180,30 @@ export default function NewHabitScreen() {
 
         if (frequency === "weekly") {
          notificationIds =
-  await scheduleWeeklyNotification(
-    `${emoji} ${habitName}`,
-    getMotivationalMessage({
-      id: habitId,
-      title: habitName,
-      emoji,
-      frequency,
-      weekdays,
-      reminderHour: hour,
-      reminderMinute: minute,
-      streak: 0,
-      longestStreak: 0,
-      lastCompletedDate: null,
-      completedToday: false,
-      notificationIds: [],
-      createdAt: new Date().toISOString(),
-    }),
-    weekdays,
-    hour,
-    minute,
-    habitId
-  );
+          await scheduleWeeklyNotification(
+            `${emoji} ${habitName}`,
+            getMotivationalMessage({
+              id: habitId,
+              title: habitName,
+              emoji,
+              frequency,
+              weekdays,
+              reminderHour: hour,
+              reminderMinute: minute,
+              streak: 0,
+              longestStreak: 0,
+              lastCompletedDate: null,
+              completedToday: false,
+              notificationIds: [],
+              createdAt: new Date().toISOString(),
+            }),
+            weekdays,
+            hour,
+            minute,
+            habitId
+          );
         }
       }
-
-      // Create habit object
 
       const newHabit: Habit = {
         id: habitId,
@@ -256,21 +221,19 @@ export default function NewHabitScreen() {
         createdAt: new Date().toISOString(),
       };
 
-      // Save
-
       createHabit(newHabit);
 
-      addHabit(newHabit);
 
-      Alert.alert(
-        "Success",
-        "Habit created successfully!"
-      );
+addHabit(newHabit);
+
+Alert.alert(
+  "Success",
+  "Habit created successfully!"
+);
 
       router.back();
     } catch (error) {
       console.log(error);
-
       Alert.alert(
         "Error",
         "Something went wrong."
@@ -303,12 +266,9 @@ export default function NewHabitScreen() {
           Choose Habit
         </Text>
 
-        {/* ── HABIT DROPDOWN (inline, no position:absolute) ── */}
         <View style={styles.dropdownWrapper}>
           <Pressable
-            onPress={() =>
-              setShowHabitDropdown(!showHabitDropdown)
-            }
+            onPress={() =>setShowHabitDropdown(!showHabitDropdown)}
             style={[
               styles.dropdown,
               {
@@ -327,11 +287,7 @@ export default function NewHabitScreen() {
             </Text>
 
             <Ionicons
-              name={
-                showHabitDropdown
-                  ? "chevron-up"
-                  : "chevron-down"
-              }
+              name={showHabitDropdown ? "chevron-up" : "chevron-down"}
               size={22}
               color={colors.text}
             />
@@ -353,14 +309,12 @@ export default function NewHabitScreen() {
                   ]}
                   onPress={() => {
                     setSelectedHabit(habit.title);
-
                     if (habit.title !== "Custom Habit") {
                       setTitle(habit.title);
                       setEmoji(habit.emoji);
                     } else {
                       setTitle("");
                     }
-
                     setShowHabitDropdown(false);
                   }}
                 >
@@ -401,10 +355,7 @@ export default function NewHabitScreen() {
                 value={title}
                 onChangeText={setTitle}
                 placeholder="Enter habit name"
-
-                placeholderTextColor={
-                  colors.textSecondary
-                }
+                placeholderTextColor={colors.textSecondary}
 
                 style={[
                   styles.input,
@@ -428,9 +379,7 @@ export default function NewHabitScreen() {
             </Text>
 
             <Pressable
-              onPress={() =>
-                setShowEmojiDropdown(!showEmojiDropdown)
-              }
+              onPress={() => setShowEmojiDropdown(!showEmojiDropdown)}
               style={[
                 styles.dropdown,
                 {
@@ -444,11 +393,7 @@ export default function NewHabitScreen() {
               </Text>
 
               <Ionicons
-                name={
-                  showEmojiDropdown
-                    ? "chevron-up"
-                    : "chevron-down"
-                }
+                name={showEmojiDropdown ? "chevron-up" : "chevron-down" }
                 size={22}
                 color={colors.text}
               />
@@ -498,31 +443,16 @@ export default function NewHabitScreen() {
           {["daily", "weekly"].map((item) => (
             <Pressable
               key={item}
-              onPress={() =>
-                setFrequency(
-                  item as "daily" | "weekly"
-                )
-              }
+              onPress={() =>setFrequency(item as "daily" | "weekly")}
               style={[
                 styles.frequencyButton,
-
                 {
-                  backgroundColor:
-                    frequency === item
-                      ? colors.primary
-                      : colors.card,
+                  backgroundColor: frequency === item ? colors.primary : colors.card,
                 },
               ]}
             >
               <Text
-                style={{
-                  color:
-                    frequency === item
-                      ? "#fff"
-                      : colors.text,
-
-                  fontWeight: "600",
-                }}
+                style={{color: frequency === item ? "#fff" : colors.text, fontWeight: "600"}}
               >
                 {item}
               </Text>
@@ -546,8 +476,7 @@ export default function NewHabitScreen() {
 
             <View style={styles.daysRow}>
               {DAYS.map((day, index) => {
-                const isSelected =
-                  weekdays.includes(index);
+                const isSelected = weekdays.includes(index);
 
                 return (
                   <Pressable
@@ -556,24 +485,15 @@ export default function NewHabitScreen() {
                     style={[
                       styles.dayButton,
                       {
-                        backgroundColor: isSelected
-                          ? colors.primary
-                          : colors.card,
-
-                        borderColor: isSelected
-                          ? colors.primary
-                          : colors.border,
+                        backgroundColor: isSelected ? colors.primary : colors.card,
+                        borderColor: isSelected ? colors.primary : colors.border,
                       },
                     ]}
                   >
                     <Text
                       style={[
                         styles.dayText,
-                        {
-                          color: isSelected
-                            ? "#fff"
-                            : colors.text,
-                        },
+                        {color: isSelected ? "#fff" : colors.text},
                       ]}
                     >
                       {day}
@@ -627,110 +547,100 @@ export default function NewHabitScreen() {
         </Pressable>
 
         <Text
-  style={[
-    styles.label,
-    { color: colors.text, marginTop: 15 },
-  ]}
->
-  Reminder Type
-</Text>
-
-<View style={styles.frequencyRow}>
-  {["once", "interval"].map(
-    (item) => (
-      <Pressable
-        key={item}
-        onPress={() =>
-          setReminderMode(
-            item as "once" | "interval"
-          )
-        }
-        style={[
-          styles.frequencyButton,
-          {
-            backgroundColor:
-              reminderMode === item
-                ? colors.primary
-                : colors.card,
-          },
-        ]}
-      >
-        <Text
-          style={{
-            color:
-              reminderMode === item
-                ? "#fff"
-                : colors.text,
-          }}
-        >
-          {item}
-        </Text>
-      </Pressable>
-    )
-  )}
-</View>
-
-{reminderMode === "interval" && (
-  <>
-    <Text
-      style={[
-        styles.label,
-        {
-          color: colors.text,
-          marginTop: 20,
-        },
-      ]}
-    >
-      Repeat Every
-    </Text>
-
-    <GlassCard>
-      {reminderMode === "interval" && (
-  <>
-    <Text
-      style={[
-        styles.label,
-        { color: colors.text },
-      ]}
-    >
-      Repeat Every
-    </Text>
-
-    <View style={styles.intervalContainer}>
-      {intervalOptions.map((option) => (
-        <Pressable
-          key={option}
-          onPress={() =>
-            setIntervalOption(option)
-          }
           style={[
-            styles.intervalButton,
-            {
-              backgroundColor:
-                intervalOption === option
-                  ? colors.primary
-                  : colors.card,
-            },
+            styles.label,
+            { color: colors.text, marginTop: 15 },
           ]}
         >
-          <Text
-            style={{
-              color:
-                intervalOption === option
-                  ? "#fff"
-                  : colors.text,
-            }}
-          >
-            {option}
-          </Text>
-        </Pressable>
-      ))}
-    </View>
-  </>
-)}
-    </GlassCard>
-  </>
-)}
+          Reminder Type
+        </Text>
+
+        <View style={styles.frequencyRow}>
+          {["once", "interval"].map(
+            (item) => (
+              <Pressable
+                key={item}
+                onPress={() => setReminderMode(item as "once" | "interval")}
+                style={[
+                  styles.frequencyButton,
+                  {
+                    backgroundColor: reminderMode === item ? colors.primary : colors.card,
+                  },
+                ]}
+              >
+                <Text
+                  style={{
+                    color: reminderMode === item ? "#fff" : colors.text,
+                  }}
+                >
+                  {item}
+                </Text>
+              </Pressable>
+            )
+          )}
+        </View>
+
+        {reminderMode === "interval" && (
+          <>
+            <Text
+              style={[
+                styles.label,
+                {
+                  color: colors.text,
+                  marginTop: 20,
+                },
+              ]}
+            >
+              Repeat Every
+            </Text>
+
+            <GlassCard>
+              {reminderMode === "interval" && (
+          <>
+            <Text
+              style={[
+                styles.label,
+                { color: colors.text },
+              ]}
+            >
+              Repeat Every
+            </Text>
+
+            <View style={styles.intervalContainer}>
+              {intervalOptions.map((option) => (
+                <Pressable
+                  key={option}
+                  onPress={() =>
+                    setIntervalOption(option)
+                  }
+                  style={[
+                    styles.intervalButton,
+                    {
+                      backgroundColor:
+                        intervalOption === option
+                          ? colors.primary
+                          : colors.card,
+                    },
+                  ]}
+                >
+                  <Text
+                    style={{
+                      color:
+                        intervalOption === option
+                          ? "#fff"
+                          : colors.text,
+                    }}
+                  >
+                    {option}
+                  </Text>
+                </Pressable>
+              ))}
+            </View>
+          </>
+        )}
+            </GlassCard>
+          </>
+        )}
 
         {showTimePicker && (
           <DateTimePicker

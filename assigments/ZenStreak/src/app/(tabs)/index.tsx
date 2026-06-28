@@ -12,34 +12,33 @@ import { getAllHabits } from "@/db/habits.repository";
 import { useHabitStore } from "@/store/habit.store";
 import { useFocusEffect } from "expo-router";
 import React, { useEffect } from "react";
-import { useAuthStore } from "@/store/auth.store";
-import { GoogleSignin } from "@react-native-google-signin/google-signin";
 
 export default function HomeScreen() {
   
   const colors = useTheme();
   const greeting = getGreeting();
-  const logout = useAuthStore(state => state.logout);
- 
-  const toggleTheme = useThemeStore((state) => state.toggleTheme);
-  const mode = useThemeStore((state) => state.mode)
 
   const habits = useHabitStore((state) => state.habits)
   const setHabits = useHabitStore((state) => state.setHabits)
 
-  const handleLogout = async () => {
-  await GoogleSignin.signOut();
+  const currentStreak = Math.max(...habits.map((h) => h.streak),0);
+  const longestStreak = Math.max(...habits.map((h) => h.longestStreak),0);
 
-  await logout();
+  const totalHabits = habits.length;
+  const completedToday = habits.filter((habit) => habit.completedToday === true).length;
+  const completionPercentage = totalHabits === 0 ? 0 : Math.round((completedToday / totalHabits) * 100);
 
-  router.replace("/auth/login");
-};
+  // console.log("Habits:", habits);
+  
   useFocusEffect(
-    React.useCallback(() => {
-      const data = getAllHabits();
-      setHabits(data as any)
-    }, [])
-  )
+  React.useCallback(() => {
+    const data = getAllHabits();
+
+    // console.log("DB Habits:", data);
+
+    setHabits(data as any);
+  }, [])
+);
   return (
     <Screen>
       <ScrollView showsVerticalScrollIndicator={false} 
@@ -77,27 +76,12 @@ export default function HomeScreen() {
                 "Small habits become big results"
               </Text>
             </View>
-
-            <Pressable
-              onPress={toggleTheme}
-              style={[
-                styles.themeButton,
-                {
-                  backgroundColor: colors.card,
-                  borderColor: colors.border,
-                },
-              ]}
-            >
-              <Ionicons
-                name={mode === "dark" ? "sunny" : "moon"}
-                size={22}
-                color={colors.text}
-              />
-            </Pressable>
           </View>
         </View>
 
         <ProgressCard />
+
+        
         <GlassCard>
           <Text
             style={[
@@ -108,22 +92,23 @@ export default function HomeScreen() {
             🔥 Current Streak
           </Text>
 
-          <Text
-            style={[
-              styles.streak,
-              { color: colors.text },
-            ]}
-          >
-            0 Days
-          </Text>
-          <Text
-            style={{
-              color: colors.textSecondary,
-              marginTop: 10,
-            }}
-          >
-            Longest Streak: 12 days
-          </Text>
+         <Text
+  style={[
+    styles.streak,
+    { color: colors.text },
+  ]}
+>
+  {currentStreak} Days
+</Text>
+
+<Text
+  style={{
+    color: colors.textSecondary,
+    marginTop: 10,
+  }}
+>
+  Longest Streak: {longestStreak} days
+</Text>
         </GlassCard>
 
         <Text
@@ -170,7 +155,25 @@ export default function HomeScreen() {
           ))
         )}
 
-        <Button title="habit page" onPress={() => router.push("/habit/new")} />
+        <Pressable
+          style={[
+            styles.createButton,
+            {
+              backgroundColor: colors.primary,
+            },
+          ]}
+          onPress={() => router.push("/habit/new")}
+        >
+          <Ionicons
+            name="add-circle-outline"
+            size={24}
+            color="#fff"
+          />
+
+          <Text style={styles.createButtonText}>
+            Create New Habit
+          </Text>
+        </Pressable>
       </ScrollView>
     </Screen>
   );
@@ -197,17 +200,6 @@ const styles = StyleSheet.create({
     marginTop: 8,
   },
 
-  themeButton: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-
-    justifyContent: "center",
-    alignItems: "center",
-
-    borderWidth: 1,
-  },
-
   cardTitle: {
     fontSize: 18,
   },
@@ -217,4 +209,25 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginTop: 12,
   },
+  createButton: {
+  flexDirection: "row",
+  alignItems: "center",
+  justifyContent: "center",
+
+  paddingVertical: 16,
+  borderRadius: 24,
+
+  marginTop: 20,
+  marginBottom: 100,
+
+  gap: 10,
+
+  elevation: 5,
+},
+
+createButtonText: {
+  color: "#fff",
+  fontSize: 17,
+  fontWeight: "700",
+},
 });

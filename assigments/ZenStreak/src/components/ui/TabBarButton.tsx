@@ -8,11 +8,7 @@ interface Props {
   onPress?: () => void;
 }
 
-export default function TabBarButton({
-  icon,
-  focused,
-  onPress,
-}: Props) {
+export default function TabBarButton({icon,focused,onPress}: Props) {
   const colors = useTheme();
 
   return (

@@ -1,21 +1,16 @@
-import {
-  View,
-  Text,
-  Image,
-  StyleSheet,
-} from "react-native";
-
+import {View,Text,Image,StyleSheet, Pressable} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-
 import { useTheme } from "@/theme";
 import { useAuthStore } from "@/store/auth.store";
+import { Ionicons } from "@expo/vector-icons";
+import { useThemeStore } from "@/store/useThemeStore";
 
 export default function AppHeader() {
   const colors = useTheme();
 
-  const user = useAuthStore(
-    (state) => state.user
-  );
+  const toggleTheme = useThemeStore((state) => state.toggleTheme);
+    const mode = useThemeStore((state) => state.mode)
+  const user = useAuthStore((state) => state.user);
 
   return (
     <SafeAreaView
@@ -53,12 +48,30 @@ export default function AppHeader() {
           </Text>
         </View>
 
-        <Image
+        <View style={styles.imageAlign}>
+          <Image
           source={{
             uri: user?.avatar,
           }}
           style={styles.avatar}
         />
+        <Pressable
+              onPress={toggleTheme}
+              style={[
+                styles.themeButton,
+                {
+                  backgroundColor: colors.card,
+                  borderColor: colors.border,
+                },
+              ]}
+            >
+              <Ionicons
+                name={mode === "dark" ? "sunny" : "moon"}
+                size={22}
+                color={colors.text}
+              />
+            </Pressable>
+        </View>
       </View>
     </SafeAreaView>
   );
@@ -70,8 +83,6 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     paddingHorizontal: 20,
-    // paddingTop: 10,
-    // paddingBottom: 15,
   },
 
   greeting: {
@@ -89,4 +100,19 @@ const styles = StyleSheet.create({
     height: 40,
     borderRadius: 25,
   },
+  themeButton: {
+    width: 45,
+    height: 45,
+    borderRadius: 25,
+
+    justifyContent: "center",
+    alignItems: "center",
+
+    borderWidth: 1,
+  },
+  imageAlign: {
+    flexDirection: "row",
+    gap: 18,
+    alignItems: "center"
+  }
 });
